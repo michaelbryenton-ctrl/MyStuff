@@ -1,0 +1,8 @@
+// Used only by test-signing-identity.sh. Override the debug signing key for a
+// validation-only invocation, never for packaging an APK.
+gradle.beforeProject { project ->
+    project.plugins.withId("com.android.application") {
+        project.android.signingConfigs.getByName("debug").storeFile =
+                new File(System.getProperty("xroar.test.keystore"))
+    }
+}

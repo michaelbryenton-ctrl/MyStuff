@@ -7,6 +7,6 @@ The user requested the emulator screen centered in the top half, with labels and
 
 The user described the CoCo joystick as a non-centered analog stick with a single button and suggested using phone touch position and double-tap for the button. Preserve that non-centering behavior rather than replacing it with a spring-centered virtual thumbstick.
 
-**Why:** The phone controls should match the original joystick behavior the user expects, while keeping the emulated picture unobstructed.
+**Why:** The phone controls should match the original joystick behavior the user expects, while keeping the emulated picture unobstructed. The user confirmed the touch joystick seemed to work fine, with further testing still pending.
 
 **How to apply:** Keep picture and controls in separate layout regions. Preserve absolute analog position after finger lift-off. Explain any proposed change to this input model before replacing it.

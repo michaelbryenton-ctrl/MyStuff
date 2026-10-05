@@ -13,6 +13,12 @@ cd android
 
 Install the debug APK from `android/app/build/outputs/apk/debug/app-debug.apk`. The project is configured for JDK 17 or later, Android SDK 35, NDK 28.2.13676358, CMake 3.22.1, and Android 5.0 or later. Android Studio can install missing SDK and NDK components through SDK Manager.
 
+Debug updates must use the original signing key. The build checks its public certificate against `android/app/debug-signing-certificate.sha256` and refuses to package an APK with a different signer. Keep the original workspace's debug keystore safe; do not regenerate it or replace the pinned fingerprint to bypass this check. An isolated build environment with a newly generated debug key cannot produce an update-compatible APK. Private signing keys must never be committed to the repository.
+
+To check a packaged update against a previous APK, run `bash android/test-apk-update.sh NEW_APK PREVIOUS_APK`. It verifies signature identity, application ID, increasing version code and the emulator's separate-process/same-task manifest. This does not replace an installation test on an Android device. Install updates over the existing app; uninstalling deletes its imported ROMs and media.
+
+To test that the build rejects a different signing key, run `bash android/test-signing-identity.sh`. It generates a disposable test key without changing the real keystore or packaging an APK.
+
 ### Set up the SDK in Replit
 
 The Replit workspace already has JDK 19. To install the Android SDK components needed by Gradle, run:
@@ -42,6 +48,8 @@ The emulator display is centered within the top half of the window. **Keyboard**
 Touch or drag on the emulator display or the lower joystick pad for absolute analog position. The position stays when you lift your finger, like a non-centering CoCo joystick. Double-tap to press its single fire button; hold the second tap for continuous fire. Quick taps have a minimum 120-millisecond fire pulse. **Joystick: Right** switches between right and left ports; the inactive port remains neutral. Touch joystick input is mapped by default, rather than a physical game controller.
 
 ## Source and licenses
+
+**Library** stops the current emulation session and returns to the existing ROM library. The emulator runs in a private Android process but shares the library's navigation task. This protects the library from upstream XRoar's process-wide `exit()` on quit and starts each emulation session with fresh native state.
 
 - XRoar source: [https://www.6809.org.uk/git/xroar.git](https://www.6809.org.uk/git/xroar.git), upstream commit `53acd7e380aacefaf4ac385282f80532f62827cb` (current upstream at the time this Android port was started). The Android build includes the Dragon, CoCo 3, and MC-10 machine families and SDL3 backend.
 - SDL3 Android package: official SDL 3.4.18 Android archive, included as `android/app/libs/SDL3-3.4.18.aar`. SDL's license is in `android/app/libs/SDL3-LICENSE.txt`.

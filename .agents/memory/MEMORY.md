@@ -2,3 +2,4 @@
 - [Android IME timing](android-ime-timing.md) — SDL sends virtual press/release pairs together; the emulator needs CPU time between transitions and must not double-handle committed text.
 - [SDKs in task copies](sdk-task-copies.md) — a task copy can lack the main workspace's already-licensed SDK; do not ask the user to repeat setup based on that alone.
 - [Phone interaction requirements](phone-interaction.md) — keep controls off the picture; touch joystick should match the user's non-centering, single-button CoCo expectation.
+- [Android session safety](android-session-safety.md) — preserve native session isolation and signing identity; never solve an update failure by recommending a data-erasing uninstall.

@@ -14,3 +14,17 @@ mtime_ms = 1791234789375
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:561507c3-2e95-4312-aa5e-72f7a9582e6e/aa5868c3-df27-42e5-9e44-1d1c5c5993d4/639caeb1-487c-459d-bd3d-138862bc2698"
 storage_version_token = "1791234856956374"
 content_type = "application/octet-stream"
+
+[[outputs]]
+id = "7y8mvwwn8B_lUHDv8W0er"
+uri = "file://android/app/build/outputs/apk/debug/xroar-1.0.2-debug.apk"
+type = "unspecified"
+title = "XRoar Android 1.0.2 — Library navigation and update safety"
+description = "Debug APK with Library returning to the ROM library, isolated native emulator shutdown, and a pinned update signing identity. Verified same certificate as 1.0.1 and higher version code; installation and navigation remain device-unverified."
+logical_id = "a7f0e9c2-6958-4d3d-9804-420c7c03bcd7"
+content_hash = "sha256:47e5fb5f2543b73220aeaf68ee55678bf25319623b5ba829187b8dd4d96ccc86"
+size = 5798093
+mtime_ms = 1791235486596
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:561507c3-2e95-4312-aa5e-72f7a9582e6e/a7f0e9c2-6958-4d3d-9804-420c7c03bcd7/ba69c8cb-b268-465a-81c8-e68d5b057369"
+storage_version_token = "1791235492359363"
+content_type = "application/octet-stream"

@@ -1,6 +1,7 @@
 package org.xroar.android;
 
 import android.graphics.Color;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
@@ -99,7 +100,7 @@ public final class XRoarActivity extends SDLActivity {
         library.setTextColor(Color.WHITE);
         library.setBackgroundTintList(android.content.res.ColorStateList.valueOf(
                 Color.rgb(29, 55, 71)));
-        library.setOnClickListener(view -> finish());
+        library.setOnClickListener(view -> returnToLibrary());
         addControl(controls, library);
         layout.addView(controls, new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, dp(52)));
@@ -144,6 +145,17 @@ public final class XRoarActivity extends SDLActivity {
     @Override protected void onPause() {
         if (joystick != null) joystick.cancelFire();
         super.onPause();
+    }
+
+    private void returnToLibrary() {
+        if (joystick != null) joystick.cancelFire();
+        // Reuse the existing library rather than creating another copy. It
+        // lives in the main process, so XRoar's exit() during SDL teardown
+        // cannot kill it. Both activities remain in the same Android task.
+        Intent library = new Intent(this, LauncherActivity.class);
+        library.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(library);
+        finish();
     }
 
     @Override public void onWindowFocusChanged(boolean focused) {

@@ -12,8 +12,8 @@ android {
         applicationId "org.xroar.android"
         minSdkVersion 21
         targetSdkVersion 35
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 3
+        versionName "1.0.2"
 
         externalNativeBuild {
             cmake {
@@ -48,4 +48,36 @@ android {
 
 dependencies {
     implementation files("libs/SDL3-3.4.18.aar")
+}
+
+// A task copy may have a different automatically generated debug keystore.
+// Never distribute such an APK as an update to the installed app: Android
+// rejects a different signer, and uninstalling erases imported ROMs/media.
+// This file contains only the public certificate fingerprint, not a key.
+def signingIdentityCheck = tasks.register("verifyDebugSigningIdentity") {
+    group = "verification"
+    description = "Require the same signing certificate as the distributed debug APK."
+    dependsOn("validateSigningDebug")
+    doLast {
+        def config = android.signingConfigs.getByName("debug")
+        def store = java.security.KeyStore.getInstance(
+                config.storeFile, config.storePassword.toCharArray())
+        def certificate = store.getCertificate(config.keyAlias)
+        if (certificate == null) {
+            throw new GradleException("The debug signing certificate is missing.")
+        }
+        def actual = java.security.MessageDigest.getInstance("SHA-256")
+                .digest(certificate.encoded).encodeHex().toString()
+        def expected = file("debug-signing-certificate.sha256").text.trim()
+        if (actual != expected) {
+            throw new GradleException(
+                    "This workspace has a different debug signing key. Android would reject " +
+                    "this APK as an update. Build the distributable APK in the original " +
+                    "workspace with its existing keystore, or securely restore that same key. " +
+                    "Do not regenerate the key or change the pinned certificate to bypass this check.")
+        }
+    }
+}
+tasks.matching { it.name == "packageDebug" }.configureEach {
+    dependsOn(signingIdentityCheck)
 }
