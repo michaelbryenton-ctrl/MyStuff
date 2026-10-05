@@ -15,7 +15,7 @@ Prefer a separate emulator process, sharing the library's navigation task, over 
 
 For app exit, close the shared Android task through the library activity rather than abruptly killing the library process. Keep this distinct from returning to the library, which leaves the app open.
 
-**Why:** The native emulator has process-wide shutdown behavior, while the library owns imported files and import work. Task-based closure preserves normal lifecycle cleanup without treating exit as data deletion.
+**Why:** The native emulator has process-wide shutdown behavior, while the library owns imported files and import work. Task-based closure preserves normal lifecycle cleanup without treating exit as data deletion. The user confirmed the Exit app behavior works on Android.
 
 **How to apply:** Retain emulator process isolation, release held input before exit, and avoid interrupting an active file import.
 
