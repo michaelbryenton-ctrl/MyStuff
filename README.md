@@ -13,6 +13,16 @@ cd android
 
 Install the debug APK from `android/app/build/outputs/apk/debug/app-debug.apk`. The project is configured for JDK 17 or later, Android SDK 35, NDK 28.2.13676358, CMake 3.22.1, and Android 5.0 or later. Android Studio can install missing SDK and NDK components through SDK Manager.
 
+### Set up the SDK in Replit
+
+The Replit workspace already has JDK 19. To install the Android SDK components needed by Gradle, run:
+
+```sh
+bash android/setup-sdk.sh
+```
+
+The script downloads the official Android command-line tools, verifies their SHA-256 checksum, prompts you to review and accept the SDK licenses, installs the required SDK/NDK/CMake packages, and writes the local SDK path to the ignored `android/local.properties` file. It does not auto-accept licenses. To use another SDK location, pass it as an argument, for example `bash android/setup-sdk.sh "$HOME/android-sdk"`.
+
 ## First run
 
 XRoar does not include copyrighted machine firmware. On the app's library screen, import the ROM images you are entitled to use. ROM files are copied into the app's private storage. You can also choose a tape, disk, or program image to have it loaded when the emulator starts. Tap **Keyboard** in the emulator to show the Android keyboard; text input is translated to XRoar key presses. Physical keyboards and game controllers are also supported through SDL.
