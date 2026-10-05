@@ -1,0 +1,1 @@
+- [Android native validation](android-native-validation.md) — host syntax checks cannot verify Android API availability; use the real NDK sysroot and minimum target.

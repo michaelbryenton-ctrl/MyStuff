@@ -1,0 +1,16 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "12F81TSqOCd4WCbfhXWYp"
+uri = "file://android/app/build/outputs/apk/debug/app-debug.apk"
+type = "unspecified"
+title = "XRoar Android debug APK"
+description = "Debug-signed APK for Android 5.0 and later, with ARM and x86 native libraries. Build, signature, launcher, and library packaging verified; not yet run on a device."
+logical_id = "aa5868c3-df27-42e5-9e44-1d1c5c5993d4"
+content_hash = "sha256:bc3f8cb165477fd21a623723e6b245f93bb1d7e0de42ca5d7a5d9c24cb35f126"
+size = 5778367
+mtime_ms = 1791227869552
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:561507c3-2e95-4312-aa5e-72f7a9582e6e/aa5868c3-df27-42e5-9e44-1d1c5c5993d4/b86c4ffb-03b4-440c-86dd-d47bc6e6324d"
+storage_version_token = "1791227982241400"
+content_type = "application/octet-stream"

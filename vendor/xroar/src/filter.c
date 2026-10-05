@@ -34,6 +34,13 @@
 #include <string.h>
 #include <complex.h>
 
+// Android port: Bionic exposes creal/cimag only from API 23. Use Clang's
+// complex component operators on older targets to retain API 21 support.
+#if defined(__ANDROID__) && __ANDROID_API__ < 23
+#define creal(value) (__real__ (value))
+#define cimag(value) (__imag__ (value))
+#endif
+
 #include "xalloc.h"
 
 #include "filter.h"
