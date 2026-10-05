@@ -50,11 +50,17 @@ static struct joystick_submodule sdl_js_mouse = {
 // If the SDL UI is active, more joystick interfaces are available
 
 extern struct joystick_submodule hkbd_js_keyboard;
+#ifdef __ANDROID__
+extern struct joystick_submodule android_touch_joystick;
+#endif
 
 static struct joystick_submodule *js_submodlist[] = {
 	&sdl_js_physical,
 	&hkbd_js_keyboard,
 	&sdl_js_mouse,
+#ifdef __ANDROID__
+&android_touch_joystick,
+#endif
 	NULL
 };
 

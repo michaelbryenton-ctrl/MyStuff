@@ -27,6 +27,8 @@ Launch-configuration regression checks can run with just the JDK: `bash android/
 
 Keyboard timing regression checks can run with a C compiler: `bash android/test-keyboard-input.sh`. These check virtual key holds, repeated characters, Shift, cancellation, and queue/tick wraparound without requiring an Android SDK.
 
+Touch-joystick regression checks run with a JDK and C compiler: `bash android/test-touch-joystick.sh`. These check absolute axis ranges, non-centering release, fire timing, and native port selection. They do not replace testing Android touch gestures on a device.
+
 ## First run
 
 XRoar does not include copyrighted machine firmware. On the app's library screen, select the computer to emulate and import the ROM images you are entitled to use. The launcher reports missing firmware instead of allowing XRoar to fall back to a different machine. ROM files are copied into the app's private storage with their original filenames preserved.
@@ -35,7 +37,9 @@ For **Tandy CoCo (NTSC)**, normally import both **Color BASIC** (`bas12.rom`, or
 
 Use **Choose cartridge, tape, disk, or program** for games. A `.ccc` file, such as Space Assault, is a **cartridge**, not machine firmware. The cartridge is passed to XRoar with autorun enabled. Other tape, disk, or program images can also be selected to load at startup.
 
-**Keyboard**, **Enter**, **Space**, and **Library** are at the bottom of the emulator, with space reserved around Android system bars and display cutouts. Tap **Keyboard** to show the Android keyboard, or use **Enter** and **Space** directly for game prompts. Phone-keyboard taps are held for 50 milliseconds of emulated time with a 30-millisecond gap so a cartridge's keyboard scan can detect them. Physical keyboards retain normal held-key behaviour; game controllers are also supported through SDL.
+The emulator display is centered within the top half of the window. **Keyboard**, **Enter**, **Space**, and **Library** are in separate rows below it, with space reserved around Android system bars, display cutouts and the phone keyboard. Tap **Keyboard** to show the Android keyboard, or use **Enter** and **Space** directly for game prompts. Phone-keyboard taps are held for 50 milliseconds of emulated time with a 30-millisecond gap so a cartridge's keyboard scan can detect them. Physical keyboards retain normal held-key behaviour.
+
+Touch or drag on the emulator display or the lower joystick pad for absolute analog position. The position stays when you lift your finger, like a non-centering CoCo joystick. Double-tap to press its single fire button; hold the second tap for continuous fire. Quick taps have a minimum 120-millisecond fire pulse. **Joystick: Right** switches between right and left ports; the inactive port remains neutral. Touch joystick input is mapped by default, rather than a physical game controller.
 
 ## Source and licenses
 

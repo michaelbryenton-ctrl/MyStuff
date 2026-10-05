@@ -35,6 +35,9 @@ public final class MachineProfileTest {
             File basic = image(roms, "bas12.rom", 8192);
             check(ntsc.validationError(roms) == null, "Both CoCo firmware halves are ready");
             List<String> arguments = Arrays.asList(ntsc.arguments(roms, game));
+            check(value(arguments, "-joy-right").equals("android-touch-0")
+                    && value(arguments, "-joy-left").equals("android-touch-1"),
+                    "Touch joystick configs map to the right and left ports");
             check(value(arguments, "-machine").equals("cocous"), "NTSC machine is explicit");
             check(value(arguments, "-bas").equals(basic.getAbsolutePath()), "Color BASIC path is explicit");
             check(value(arguments, "-extbas").equals(extended.getAbsolutePath()), "Extended BASIC path is explicit");

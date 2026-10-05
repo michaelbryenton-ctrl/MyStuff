@@ -107,6 +107,22 @@ final class MachineProfile {
         arguments.add(directory.getAbsolutePath());
         arguments.add("-machine");
         arguments.add(id);
+        // Each port has its own config. The JNI source keeps the unselected
+        // port neutral and preserves the selected stick's absolute position.
+        for (int port = 0; port < 2; port++) {
+            arguments.add("-joy");
+            arguments.add("android-touch-" + port);
+            arguments.add("-joy-axis");
+            arguments.add("0=touch:" + port);
+            arguments.add("-joy-axis");
+            arguments.add("1=touch:" + port);
+            arguments.add("-joy-button");
+            arguments.add("0=touch:" + port);
+        }
+        arguments.add("-joy-right");
+        arguments.add("android-touch-0");
+        arguments.add("-joy-left");
+        arguments.add("android-touch-1");
         File primary = findRom(directory, primaryNames);
         if (primary != null) {
             addRom(arguments, primaryOption, primary);
