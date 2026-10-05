@@ -162,8 +162,8 @@ target_compile_definitions(main PRIVATE
     WANT_PART_TCC1014=1
     WANT_CART_ARCH_DRAGON=1
     WANT_CART_ARCH_MC10=1
-    PACKAGE_VERSION=\"1.13.0.dev\"
-    PACKAGE_TEXT=\"XRoar 1.13.0.dev\"
-    PACKAGE_YEAR=\"2026\"
+    "PACKAGE_VERSION=\"1.13.0.dev\""
+    "PACKAGE_TEXT=\"XRoar 1.13.0.dev\""
+    "PACKAGE_YEAR=\"2026\""
 )
 target_link_libraries(main PRIVATE SDL3::SDL3 m)
