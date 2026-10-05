@@ -22,6 +22,10 @@
 #include "ui.h"
 #include "vo.h"
 
+#ifdef __ANDROID__
+#include "android_ime_queue.h"
+#include "android_keyboard_bridge.h"
+#endif
 struct joystick_module;
 struct keyboard_sdl3_state;
 
@@ -41,6 +45,9 @@ struct ui_sdl3_interface {
 
 	// Pointer state
 	bool mouse_hidden;
+#ifdef __ANDROID__
+struct android_ime_queue ime_keys;
+#endif
 };
 
 extern struct ui_sdl3_interface *global_uisdl3;
@@ -64,6 +71,11 @@ void run_sdl_event_loop(struct ui_sdl3_interface *uisdl3);
 void sdl_keypress(struct ui_sdl3_interface *uisdl3, SDL_KeyboardEvent *ev);
 void sdl_keyrelease(struct ui_sdl3_interface *uisdl3, SDL_KeyboardEvent *ev);
 void sdl_textinput(struct ui_sdl3_interface *uisdl3, const char *text);
+#ifdef __ANDROID__
+void sdl_process_textinput(struct ui_sdl3_interface *);
+void sdl_cancel_textinput(struct ui_sdl3_interface *);
+void sdl_tap_key(struct ui_sdl3_interface *, SDL_Scancode);
+#endif
 
 void sdl_js_enable_events(void);
 void sdl_js_device_added(int index);

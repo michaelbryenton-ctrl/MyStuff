@@ -63,6 +63,11 @@ struct ui_sdl3_interface *ui_sdl_allocate(size_t usize) {
 
 void ui_sdl_init(struct ui_sdl3_interface *uisdl3, struct ui_cfg *ui_cfg) {
 	uisdl3->cfg = ui_cfg;
+#ifdef __ANDROID__
+// Android port: let the emulated keyboard scan each virtual key before release.
+android_ime_queue_init(&uisdl3->ime_keys, EVENT_MS(50), EVENT_MS(30));
+android_keyboard_bridge_init();
+#endif
 
 	// Defaults - may be overridden by platform-specific versions
 	struct ui_interface *ui = &uisdl3->ui_interface;

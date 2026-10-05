@@ -131,8 +131,12 @@ foreach(source IN LISTS XROAR_SOURCES PORTALIB_SOURCES)
     endif()
 endforeach()
 
-add_library(main SHARED ${XROAR_SOURCES} ${PORTALIB_SOURCES})
+add_library(main SHARED ${XROAR_SOURCES} ${PORTALIB_SOURCES}
+    android_ime_queue.c
+    android_keyboard_bridge.c
+)
 target_include_directories(main PRIVATE
+    "${CMAKE_CURRENT_LIST_DIR}"
     "${XROAR_ROOT}"
     "${XROAR_SRC}"
     "${PORTALIB}"

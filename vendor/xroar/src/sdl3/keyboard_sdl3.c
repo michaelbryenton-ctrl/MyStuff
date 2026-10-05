@@ -17,11 +17,56 @@
 #include <SDL3/SDL.h>
 
 #include "hkbd.h"
+#include "events.h"
 #include "xroar.h"
 
 #include "sdl3/common.h"
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#ifdef __ANDROID__
+static void emit_ime_key(void *context, uint8_t scancode, bool down) {
+(void)context;
+if (down) {
+hk_scan_press(scancode);
+} else {
+hk_scan_release(scancode);
+}
+}
+
+void sdl_process_textinput(struct ui_sdl3_interface *uisdl3) {
+android_ime_queue_process(&uisdl3->ime_keys, event_current_tick, emit_ime_key, NULL);
+}
+
+void sdl_cancel_textinput(struct ui_sdl3_interface *uisdl3) {
+android_ime_queue_cancel(&uisdl3->ime_keys, emit_ime_key, NULL);
+}
+
+static bool queue_ime_key(struct ui_sdl3_interface *uisdl3, SDL_KeyboardEvent *ev, bool down) {
+// SDL's Android IME generates Unicode key pairs with virtual device id/raw code 0.
+// Physical keyboards use Android keycodes and remain on the normal held-key path.
+if (ev->which != 0 || ev->raw != 0) return false;
+if (ev->scancode > 0 && ev->scancode < 256) {
+bool shift = ev->scancode == SDL_SCANCODE_LSHIFT || ev->scancode == SDL_SCANCODE_RSHIFT;
+if (!android_ime_queue_key(&uisdl3->ime_keys, event_current_tick, ev->scancode, down, shift)) {
+sdl_cancel_textinput(uisdl3);
+SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "Keyboard input",
+        "Too much queued input. Wait, then try typing again.", uisdl3->vo_window);
+}
+}
+return true;
+}
+
+void sdl_tap_key(struct ui_sdl3_interface *uisdl3, SDL_Scancode scancode) {
+if (uisdl3->ime_keys.count > ANDROID_IME_QUEUE_CAPACITY - 2) {
+sdl_cancel_textinput(uisdl3);
+}
+SDL_KeyboardEvent event = {0};
+event.scancode = scancode;
+queue_ime_key(uisdl3, &event, true);
+queue_ime_key(uisdl3, &event, false);
+}
+#endif
 
 void sdl_keypress(struct ui_sdl3_interface *uisdl3, SDL_KeyboardEvent *ev) {
 
@@ -44,6 +89,9 @@ void sdl_keypress(struct ui_sdl3_interface *uisdl3, SDL_KeyboardEvent *ev) {
 		}
 	}
 
+#ifdef __ANDROID__
+if (queue_ime_key(uisdl3, ev, true)) return;
+#endif
 	if (ev->scancode < 256) {
 		hk_scan_press(ev->scancode);
 	}
@@ -77,11 +125,15 @@ void sdl_keyrelease(struct ui_sdl3_interface *uisdl3, SDL_KeyboardEvent *ev) {
 		}
 	}
 
+#ifdef __ANDROID__
+if (queue_ime_key(uisdl3, ev, false)) return;
+#endif
 	if (ev->scancode < 256) {
 		hk_scan_release(ev->scancode);
 	}
 }
 
+#ifndef __ANDROID__
 static SDL_Scancode text_scancode(unsigned char ch, bool *shift) {
 	*shift = false;
 	if (ch >= 'A' && ch <= 'Z') {
@@ -147,8 +199,15 @@ static void send_scancode(struct ui_sdl3_interface *uisdl3, SDL_Scancode scancod
 		sdl_keyrelease(uisdl3, &event);
 	}
 }
+#endif
 
 void sdl_textinput(struct ui_sdl3_interface *uisdl3, const char *text) {
+#ifdef __ANDROID__
+// SDLInputConnection already emits the matching virtual scancodes for ASCII.
+// Handling committed text a second time would type each character twice.
+(void)uisdl3;
+(void)text;
+#else
 	for (const unsigned char *p = (const unsigned char *)text; *p; ++p) {
 		bool shift = false;
 		SDL_Scancode scancode = text_scancode(*p, &shift);
@@ -164,4 +223,5 @@ void sdl_textinput(struct ui_sdl3_interface *uisdl3, const char *text) {
 			send_scancode(uisdl3, SDL_SCANCODE_LSHIFT, false);
 		}
 	}
+#endif
 }

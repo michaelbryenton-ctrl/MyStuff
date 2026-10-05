@@ -23,9 +23,19 @@ bash android/setup-sdk.sh
 
 The script downloads the official Android command-line tools, verifies their SHA-256 checksum, prompts you to review and accept the SDK licenses, installs the required SDK/NDK/CMake packages, and writes the local SDK path to the ignored `android/local.properties` file. It does not auto-accept licenses. To use another SDK location, pass it as an argument, for example `bash android/setup-sdk.sh "$HOME/android-sdk"`.
 
+Launch-configuration regression checks can run with just the JDK: `bash android/test-launch-config.sh`. These check firmware requirements, machine selection and cartridge arguments, not device playback or APK packaging.
+
+Keyboard timing regression checks can run with a C compiler: `bash android/test-keyboard-input.sh`. These check virtual key holds, repeated characters, Shift, cancellation, and queue/tick wraparound without requiring an Android SDK.
+
 ## First run
 
-XRoar does not include copyrighted machine firmware. On the app's library screen, import the ROM images you are entitled to use. ROM files are copied into the app's private storage. You can also choose a tape, disk, or program image to have it loaded when the emulator starts. Tap **Keyboard** in the emulator to show the Android keyboard; text input is translated to XRoar key presses. Physical keyboards and game controllers are also supported through SDL.
+XRoar does not include copyrighted machine firmware. On the app's library screen, select the computer to emulate and import the ROM images you are entitled to use. The launcher reports missing firmware instead of allowing XRoar to fall back to a different machine. ROM files are copied into the app's private storage with their original filenames preserved.
+
+For **Tandy CoCo (NTSC)**, normally import both **Color BASIC** (`bas12.rom`, or another supported `bas10`–`bas13` image) and **Extended Color BASIC** (`extbas11.rom` or `extbas10.rom`). `extbas11.rom` alone is normally only the Extended BASIC half, not the complete firmware. A 16K combined firmware image named `coco.rom` is also supported. Firmware must retain a name recognised by the selected machine; the launcher shows a suggested filename when it is missing.
+
+Use **Choose cartridge, tape, disk, or program** for games. A `.ccc` file, such as Space Assault, is a **cartridge**, not machine firmware. The cartridge is passed to XRoar with autorun enabled. Other tape, disk, or program images can also be selected to load at startup.
+
+**Keyboard**, **Enter**, **Space**, and **Library** are at the bottom of the emulator, with space reserved around Android system bars and display cutouts. Tap **Keyboard** to show the Android keyboard, or use **Enter** and **Space** directly for game prompts. Phone-keyboard taps are held for 50 milliseconds of emulated time with a 30-millisecond gap so a cartridge's keyboard scan can detect them. Physical keyboards retain normal held-key behaviour; game controllers are also supported through SDL.
 
 ## Source and licenses
 

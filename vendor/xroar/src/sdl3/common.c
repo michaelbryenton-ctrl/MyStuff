@@ -109,6 +109,11 @@ void run_sdl_event_loop(struct ui_sdl3_interface *uisdl3) {
 		case SDL_EVENT_TEXT_INPUT:
 			sdl_textinput(uisdl3, event.text.text);
 			break;
+#ifdef __ANDROID__
+case SDL_EVENT_WINDOW_FOCUS_LOST:
+sdl_cancel_textinput(uisdl3);
+break;
+#endif
 
 		case SDL_EVENT_JOYSTICK_ADDED:
 			sdl_js_device_added(event.jdevice.which);
@@ -159,9 +164,20 @@ void run_sdl_event_loop(struct ui_sdl3_interface *uisdl3) {
 			break;
 
 		default:
+#ifdef __ANDROID__
+{
+SDL_Scancode scancode;
+if (android_keyboard_tap_event(&event, &scancode)) {
+sdl_tap_key(uisdl3, scancode);
+}
+}
+#endif
 			break;
 		}
 	}
+#ifdef __ANDROID__
+sdl_process_textinput(uisdl3);
+#endif
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

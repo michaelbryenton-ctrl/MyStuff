@@ -1,1 +1,3 @@
 - [Android native validation](android-native-validation.md) — host syntax checks cannot verify Android API availability; use the real NDK sysroot and minimum target.
+- [Android IME timing](android-ime-timing.md) — SDL sends virtual press/release pairs together; the emulator needs CPU time between transitions and must not double-handle committed text.
+- [SDKs in task copies](sdk-task-copies.md) — a task copy can lack the main workspace's already-licensed SDK; do not ask the user to repeat setup based on that alone.
