@@ -1,0 +1,33 @@
+## autoconf files
+.dirstamp
+## build files
+/*.o
+/alsa/*.o
+/dragon/*.o
+/evdev/*.o
+/gtk3/*.o
+/gtk2/*.o
+/jack/*.o
+/joydev/*.o
+/macosx/*.o
+/mc6801/*.o
+/mc6809/*.o
+/mc6847/*.o
+/null/*.o
+/oss/*.o
+/pulseaudio/*.o
+/sdl/*.o
+/sdl2/*.o
+/sdl3/*.o
+/tcc1014/*.o
+/wasm/*.o
+/windows32/*.o
+/windows32/*.res
+/tags
+/x11/*.o
+/xroar
+/xroar.exe
+/xroar.js
+/xroar.wasm
+/xroar.wast
+/xroar.dSYM/

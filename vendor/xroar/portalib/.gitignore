@@ -1,0 +1,5 @@
+## build files
+/*.o
+/pl_glib/*.o
+/libporta.a
+/tags

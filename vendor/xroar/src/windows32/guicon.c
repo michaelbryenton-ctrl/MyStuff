@@ -1,0 +1,72 @@
+/* Windows console redirection.
+ *
+ * Copyright 2017-2024 Ciaran Anscomb
+ *
+ * This file is part of XRoar, a Dragon/Tandy CoCo emulator.
+ *
+ * XRoar is free software; you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * See COPYING.GPL for redistribution conditions.
+ */
+
+// Console redirection adapted from example by "luke" on stackoverflow.com.
+// Further developed after advice from "Mysoft" on IRC.
+
+#include "top-config.h"
+
+#include <windows.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <io.h>
+
+static bool have_console = 0;
+
+void windows32_attach_to_parent_console(void) {
+	have_console = AttachConsole(ATTACH_PARENT_PROCESS);
+}
+
+void windows32_ensure_console(void) {
+	CONSOLE_SCREEN_BUFFER_INFO coninfo;
+
+	have_console = have_console || AllocConsole();
+	if (!have_console)
+		return;
+
+	// set the screen buffer to be big enough to let us scroll text
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &coninfo);
+	coninfo.dwSize.Y = 1024;  // max lines
+	SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE), coninfo.dwSize);
+}
+
+void windows32_redirect_io_to_console(void) {
+	int hConHandle;
+	HANDLE lStdHandle;
+	FILE *fp;
+
+	if (!have_console)
+		return;
+
+	// redirect unbuffered STDOUT to the console
+	lStdHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+	hConHandle = _open_osfhandle((intptr_t)lStdHandle, _O_TEXT);
+	fp = _fdopen(hConHandle, "w");
+	*stdout = *fp;
+	setvbuf(stdout, NULL, _IONBF, 0);
+
+	// redirect unbuffered STDIN to the console
+	lStdHandle = GetStdHandle(STD_INPUT_HANDLE);
+	hConHandle = _open_osfhandle((intptr_t)lStdHandle, _O_TEXT);
+	fp = _fdopen(hConHandle, "r");
+	*stdin = *fp;
+	setvbuf(stdin, NULL, _IONBF, 0);
+
+	// redirect unbuffered STDERR to the console
+	lStdHandle = GetStdHandle(STD_ERROR_HANDLE);
+	hConHandle = _open_osfhandle((intptr_t)lStdHandle, _O_TEXT);
+	fp = _fdopen(hConHandle, "w");
+	*stderr = *fp;
+	setvbuf(stderr, NULL, _IONBF, 0);
+}

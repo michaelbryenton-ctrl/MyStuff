@@ -47,3 +47,17 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+
+# Android / Gradle build outputs
+android/.gradle/
+android/build/
+android/local.properties
+android/.idea/
+android/app/build/
+android/app/.cxx/
+
+# Generated Autotools files in the imported upstream tree
+vendor/xroar/autom4te.cache/
+vendor/xroar/config.h
+vendor/xroar/config.log
+vendor/xroar/config.status

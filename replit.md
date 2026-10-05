@@ -1,45 +1,41 @@
-# [Project name]
+# XRoar for Android
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+Native Android packaging for the XRoar Dragon, Tandy CoCo, and MC-10 emulator, built from the upstream C code with SDL3.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
-- `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- `cd android && ./gradlew assembleDebug` — build the debug APK
+- JDK 17+, Android SDK 35, NDK 28.2.13676358, and CMake 3.22.1 are required
+- APK output: `android/app/build/outputs/apk/debug/app-debug.apk`
 
 ## Stack
 
-- pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- Android Gradle project, Java activity launcher, CMake and NDK
+- XRoar C emulator source with SDL3 Android package
+- ROM files are imported by the user and stored in app-private storage
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `android/` — Android app and Gradle build
+- `android/app/jni/` — CMake build for the XRoar core
+- `vendor/xroar/` — upstream XRoar source
+- `android/app/libs/SDL3-3.4.18.aar` — official SDL3 Android package
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Use maintained upstream XRoar with SDL3; the upstream Android branch is a 2014 SDL 1.2 experiment.
+- Keep proprietary firmware ROM images out of the app; users import their own through Android's document picker.
+- Copy imported media and ROMs into app-private storage so emulator paths remain available after the picker closes.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
-
-## User preferences
-
-_Populate as you build — explicit user instructions worth remembering across sessions._
+Users can import machine ROMs, select tape/disk/program media, and launch the XRoar emulator on Android. SDL handles physical keyboards and controllers; a launcher control opens Android's soft keyboard.
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- A ROM-free APK cannot boot a machine; firmware must be imported before launch.
+- The Android APK must be built with the SDK/NDK versions listed above; the Replit workspace does not provide a device emulator.
 
 ## Pointers
 
-- See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
+- `README.md` — Android build setup, supported machines, ROM import, and license notes
