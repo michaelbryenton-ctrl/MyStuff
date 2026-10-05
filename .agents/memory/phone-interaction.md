@@ -10,3 +10,13 @@ The user described the CoCo joystick as a non-centered analog stick with a singl
 **Why:** The phone controls should match the original joystick behavior the user expects, while keeping the emulated picture unobstructed. The user confirmed the touch joystick seemed to work fine, with further testing still pending.
 
 **How to apply:** Keep picture and controls in separate layout regions. Preserve absolute analog position after finger lift-off. Explain any proposed change to this input model before replacing it.
+
+## CoCo display and cassette expectations
+
+The user requested a CoCo bezel based on their picture of the TRS-80 13-inch Color Video Receiver, with live emulation inside the TV opening and the keyboard/joystick controls below.
+
+The user expects a selected machine-code cassette to initiate `CLOADM` automatically. Do not require manual console commands after choosing this kind of media. BASIC cassettes still need their own type-appropriate loading command.
+
+**Why:** The user explicitly asked for the receiver-style bezel and cassette auto-loading. Their cassette example was supplied as an archive containing alternate CAS and WAV representations, so importing an archive is part of the expected media-picker flow.
+
+**How to apply:** Preserve the CoCo-specific receiver styling and automatic, header-appropriate cassette loading when revising phone UI or media import. A successful extraction or launch-argument test is not proof that the cassette actually boots on Android.

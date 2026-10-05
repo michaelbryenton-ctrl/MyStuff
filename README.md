@@ -49,6 +49,14 @@ Touch or drag on the emulator display or the lower joystick pad for absolute ana
 
 ## Source and licenses
 
+**Exit app** is available in both the library and emulator controls. Confirming it stops the current session and removes the app's task from Recents; **Cancel** leaves the app open. Imported ROMs/media and library preferences are retained. The library's Exit button is temporarily disabled during file imports so a copy is not interrupted.
+
+The CoCo display has a decorative bezel inspired by the TRS-80 13-inch Color Video Receiver. Its CRT opening contains the live SDL display; it does not add scanlines or tint. Dragon and MC-10 displays keep their plain frame.
+
+Use the media picker to import a cassette ZIP. A ZIP with one CAS and a same-named WAV is unpacked and the CAS is selected. Archives with multiple different programs must be extracted manually so you can select the intended one. ZIP paths, expanded size and checksums are validated. XRoar's native autorun reads tape headers: machine-code tapes use `CLOADM` (and `EXEC` where appropriate); BASIC tapes use `CLOAD` and `RUN`. Previously imported ZIPs need to be selected again to extract them.
+
+Run `bash android/test-media-and-bezel.sh [CASSETTE_ZIP]` for archive safety and bezel sizing checks, optionally using the Canyon Climber example. Games and ROMs supplied for testing are not bundled into the APK.
+
 **Library** stops the current emulation session and returns to the existing ROM library. The emulator runs in a private Android process but shares the library's navigation task. This protects the library from upstream XRoar's process-wide `exit()` on quit and starts each emulation session with fresh native state.
 
 - XRoar source: [https://www.6809.org.uk/git/xroar.git](https://www.6809.org.uk/git/xroar.git), upstream commit `53acd7e380aacefaf4ac385282f80532f62827cb` (current upstream at the time this Android port was started). The Android build includes the Dragon, CoCo 3, and MC-10 machine families and SDL3 backend.

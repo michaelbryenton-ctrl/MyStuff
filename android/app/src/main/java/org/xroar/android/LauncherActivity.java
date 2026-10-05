@@ -42,6 +42,7 @@ public final class LauncherActivity extends Activity {
     private TextView mediaSummary;
     private TextView status;
     private Button startButton;
+    private Button exitButton;
     private Spinner machinePicker;
     private String selectedMediaPath;
     private boolean importing;
@@ -49,12 +50,19 @@ public final class LauncherActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (AppExit.handleRequest(this, getIntent())) return;
         selectedMediaPath = getPreferences(MODE_PRIVATE).getString(LAST_MEDIA, null);
         if (selectedMediaPath != null && !new File(selectedMediaPath).isFile()) {
             selectedMediaPath = null;
         }
         buildScreen();
         refreshSummaries();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        AppExit.handleRequest(this, intent);
     }
 
     @Override
@@ -133,6 +141,9 @@ public final class LauncherActivity extends Activity {
         startButton = button("Start XRoar");
         content.addView(startButton, margins(startButton, 0, 0, 0, 12));
         startButton.setOnClickListener(view -> startEmulator());
+        exitButton = button("Exit app");
+        exitButton.setOnClickListener(view -> AppExit.confirm(this, () -> {}));
+        content.addView(exitButton, margins(exitButton, 0, 0, 0, 12));
 
         status = text("", 14, Color.rgb(121, 229, 210));
         content.addView(status);
@@ -175,6 +186,7 @@ public final class LauncherActivity extends Activity {
         final boolean roms = requestCode == PICK_ROMS;
         final File targetDirectory = new File(getFilesDir(), roms ? "roms" : "media");
         importing = true;
+        exitButton.setEnabled(false);
         startButton.setEnabled(false);
         status.setText(roms ? "Importing firmware…" : "Copying media into app storage…");
 
@@ -189,12 +201,29 @@ public final class LauncherActivity extends Activity {
                         throw new IOException("Could not create " + targetDirectory);
                     }
                     String name = safeFileName(displayName(uri));
+                    if (roms && MediaArchive.isTape(new File(name))) {
+                        throw new IOException(name + " is a cassette. Use "
+                                + "\"Choose cartridge, tape, disk, or program\" instead.");
+                    }
+                    if (roms && MediaArchive.isZip(new File(name))) {
+                        throw new IOException("Extract the firmware ZIP and import its ROM files.");
+                    }
                     if (roms && MachineProfile.isCartridge(new File(name))) {
                         throw new IOException(name + " is a game cartridge. Use "
                                 + "\"Choose cartridge, tape, disk, or program\" instead.");
                     }
                     File destination = uniqueFile(targetDirectory, name);
                     copyDocument(uri, destination);
+                    if (!roms && MediaArchive.isZip(destination)) {
+                        File archive = destination;
+                        try {
+                            destination = MediaArchive.extract(archive, targetDirectory);
+                        } finally {
+                            // Delete only our temporary private copy, never the
+                            // user's original document.
+                            archive.delete();
+                        }
+                    }
                     copied++;
                     if (!roms) {
                         mediaPath = destination.getAbsolutePath();
@@ -221,6 +250,11 @@ public final class LauncherActivity extends Activity {
                 refreshSummaries();
                 if (copiedCount > 0) {
                     status.setText("Imported " + copiedCount + (roms ? " firmware file(s)." : " media file."));
+                    if (importedMedia != null &&
+                            importedMedia.toLowerCase(java.util.Locale.ROOT).endsWith(".cas")) {
+                        status.append("\nTape ready. Start emulation to auto-load it "
+                                + "(CLOADM for machine code, CLOAD for BASIC).");
+                    }
                 } else {
                     status.setText("No files were imported. Check that the selected files are accessible.");
                 }
@@ -304,6 +338,10 @@ public final class LauncherActivity extends Activity {
     }
 
     private void startEmulator() {
+        if (selectedMediaPath != null && MediaArchive.isZip(new File(selectedMediaPath))) {
+            status.setText("Choose this ZIP again to extract and select the tape inside it.");
+            return;
+        }
         File romDirectory = new File(getFilesDir(), "roms");
         MachineProfile profile = selectedMachine();
         String error = profile.validationError(romDirectory);
@@ -334,6 +372,7 @@ public final class LauncherActivity extends Activity {
                 ? "Selected: " + new File(selectedMediaPath).getName()
                 : "Optional. Choose a .ccc cartridge, tape, disk, or program to start automatically.");
         startButton.setEnabled(error == null && !importing);
+        exitButton.setEnabled(!importing);
     }
 
     private MachineProfile selectedMachine() {

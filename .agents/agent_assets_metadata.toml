@@ -28,3 +28,45 @@ mtime_ms = 1791235486596
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:561507c3-2e95-4312-aa5e-72f7a9582e6e/a7f0e9c2-6958-4d3d-9804-420c7c03bcd7/ba69c8cb-b268-465a-81c8-e68d5b057369"
 storage_version_token = "1791235492359363"
 content_type = "application/octet-stream"
+
+[[outputs]]
+id = "H4qyRiEv8ejxXlB3-pWnb"
+uri = "file://android/app/build/outputs/apk/debug/xroar-1.0.3-debug.apk"
+type = "unspecified"
+title = "XRoar Android 1.0.3 — CoCo TV bezel and cassette ZIP loading"
+description = "Debug APK with a TRS-80 receiver-inspired bezel and safe cassette archive extraction. Same update certificate as 1.0.2; Canyon Climber CAS extraction and autorun arguments verified. Full Android game boot not yet verified. No games or ROMs bundled."
+logical_id = "a579ed11-8be8-4aae-b2ea-b49178affe0d"
+content_hash = "sha256:bf9d52aa8836bd1838c8b9d219bd810921418806a2cbc95eec0f774201631cb5"
+size = 5829493
+mtime_ms = 1791236446795
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:561507c3-2e95-4312-aa5e-72f7a9582e6e/a579ed11-8be8-4aae-b2ea-b49178affe0d/cb0660f1-681f-44a3-b42f-84634ae826b9"
+storage_version_token = "1791236477982499"
+content_type = "application/octet-stream"
+
+[[outputs]]
+id = "TG6T9FaAfpucrNYrW1l-w"
+uri = "file://android/build/previews/coco-monitor.png"
+type = "image"
+title = "CoCo receiver bezel preview"
+description = "Static preview of the cabinet artwork used in the app. The green area is a stand-in for the live emulator picture, not an Android screenshot."
+logical_id = "228d0ffa-7bd0-4cf2-956c-c3b624335eaf"
+content_hash = "sha256:c99daae562ea05384e5416c0628eb46ed7487740f1f5e9d04c2f404d2a7defb2"
+size = 12580
+mtime_ms = 1791236373488
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:561507c3-2e95-4312-aa5e-72f7a9582e6e/228d0ffa-7bd0-4cf2-956c-c3b624335eaf/15bcd95f-f3fd-40bb-b0aa-4e6f6f3a8f07"
+storage_version_token = "1791236478425319"
+content_type = "image/png"
+
+[[outputs]]
+id = "-P1xzeJXt7ftQqXauBjmF"
+uri = "file://android/app/build/outputs/apk/debug/xroar-1.0.4-debug.apk"
+type = "unspecified"
+title = "XRoar Android 1.0.4 — Exit app controls"
+description = "Adds Exit app to the library and emulator, with Exit/Cancel confirmation. Stops emulation and closes the app task while retaining imported ROMs and media. Build and update-signing checks passed against 1.0.3; native Android exit behavior has not yet been device-tested."
+logical_id = "370cff6a-9079-4bdc-a6ab-3823b4c833d5"
+content_hash = "sha256:b8decd05971685e9f6493629144647cf3fc64879880c359f2fb5942dcf7f8d1f"
+size = 5805627
+mtime_ms = 1791236678448
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:561507c3-2e95-4312-aa5e-72f7a9582e6e/370cff6a-9079-4bdc-a6ab-3823b4c833d5/4517bb74-d667-4532-a0f5-ca236f5c5667"
+storage_version_token = "1791236701564292"
+content_type = "application/octet-stream"

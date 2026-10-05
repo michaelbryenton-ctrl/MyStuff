@@ -66,7 +66,9 @@ public final class XRoarActivity extends SDLActivity {
 
         EmulatorLayout layout = new EmulatorLayout(this);
         layout.setBackgroundColor(Color.BLACK);
-        FrameLayout display = new FrameLayout(this);
+        String machine = getIntent().getStringExtra(LauncherActivity.EXTRA_MACHINE);
+        FrameLayout display = machine != null && machine.startsWith("coco")
+                ? new CocoMonitorLayout(this) : new FrameLayout(this);
         ((ViewGroup) mSurface.getParent()).removeView(mSurface);
         display.addView(mSurface, new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT,
@@ -110,14 +112,28 @@ public final class XRoarActivity extends SDLActivity {
         });
         Button port = new Button(this);
         port.setAllCaps(false);
-        port.setText("Joystick: Right · tap to switch port");
+        port.setText("Joystick: Right · switch");
         port.setTextSize(13);
         port.setTextColor(Color.WHITE);
         port.setBackgroundTintList(android.content.res.ColorStateList.valueOf(
                 Color.rgb(29, 55, 71)));
         port.setOnClickListener(view -> port.setText("Joystick: "
-                + (joystick.switchPort() == 0 ? "Right" : "Left") + " · tap to switch port"));
-        layout.addView(port, new LinearLayout.LayoutParams(
+                + (joystick.switchPort() == 0 ? "Right" : "Left") + " · switch"));
+        port.setMinWidth(0);
+        port.setMinimumWidth(0);
+        LinearLayout sessionControls = new LinearLayout(this);
+        sessionControls.setOrientation(LinearLayout.HORIZONTAL);
+        sessionControls.addView(port, new LinearLayout.LayoutParams(
+                0, ViewGroup.LayoutParams.MATCH_PARENT, 3));
+        Button exit = new Button(this);
+        exit.setText("Exit app");
+        exit.setAllCaps(false);
+        exit.setTextColor(Color.WHITE);
+        exit.setBackgroundTintList(android.content.res.ColorStateList.valueOf(
+                Color.rgb(29, 55, 71)));
+        exit.setOnClickListener(view -> AppExit.confirm(this, () -> joystick.cancelFire()));
+        addControl(sessionControls, exit);
+        layout.addView(sessionControls, new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, dp(44)));
         layout.addView(joystick, new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, 0, 1));

@@ -133,6 +133,9 @@ final class MachineProfile {
         addRom(arguments, "-extbas", findRom(directory, extendedNames));
         addRom(arguments, "-altbas", findRom(directory, alternateNames));
         if (media != null) {
+            if (media.getName().toLowerCase(Locale.ROOT).endsWith(".zip")) {
+                throw new IllegalStateException("Choose the ZIP again to extract the tape inside it.");
+            }
             if (!media.isFile() || media.length() == 0) {
                 throw new IllegalStateException("The selected program is missing or empty. Choose it again.");
             }

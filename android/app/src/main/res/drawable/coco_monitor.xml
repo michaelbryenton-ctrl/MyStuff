@@ -1,0 +1,27 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="1000dp" android:height="770dp"
+    android:viewportWidth="1000" android:viewportHeight="770">
+    <!-- Cabinet inspired by the TRS-80 13-inch Color Video Receiver. The
+         reversed inner contour is a transparent hole, not a printed screen. -->
+    <path android:fillColor="#11181C" android:pathData="M119,681 H898 V736 H119 Z M100,738 H915 V751 H100 Z"/>
+    <path android:fillColor="#394448" android:pathData="M29,89 L60,30 H944 L973,89 Z"/>
+    <path android:fillColor="#566164" android:pathData="M60,30 H944 L941,39 H62 Z"/>
+    <path android:fillColor="#141D21" android:pathData="M32,78 H970 V93 H32 Z"/>
+    <path android:fillColor="#B6BCB9" android:pathData="M29,93 H973 V684 H29 Z M114,127 Q95,127 95,146 V603 Q95,622 114,622 H736 Q755,622 755,603 V146 Q755,127 736,127 Z"/>
+    <path android:fillColor="#303538" android:pathData="M29,93 H973 V684 H29 Z M39,102 V674 H963 V102 Z"/>
+    <path android:fillColor="#F1EEE4" android:pathData="M43,105 H797 V660 H43 Z M114,127 Q95,127 95,146 V603 Q95,622 114,622 H736 Q755,622 755,603 V146 Q755,127 736,127 Z"/>
+    <path android:fillColor="#4E5557" android:pathData="M55,111 H785 V651 H55 Z M64,118 V643 H777 V118 Z"/>
+    <path android:fillColor="#969D99" android:pathData="M70,124 H771 V636 H70 Z M114,127 Q95,127 95,146 V603 Q95,622 114,622 H736 Q755,622 755,603 V146 Q755,127 736,127 Z"/>
+    <path android:fillColor="#233A35" android:pathData="M88,126 H762 V625 H88 Z M114,127 Q95,127 95,146 V603 Q95,622 114,622 H736 Q755,622 755,603 V146 Q755,127 736,127 Z"/>
+    <path android:fillColor="#F0EEE5" android:pathData="M800,102 H963 V668 H800 Z"/>
+    <path android:fillColor="#252E30" android:pathData="M809,111 H954 V470 H809 Z"/>
+    <path android:fillColor="#11181A" android:pathData="M819,122 H893 V159 H819 Z"/>
+    <path android:fillColor="#C5CAC4" android:pathData="M909,127 H938 V154 H909 Z"/>
+    <path android:fillColor="#E3E2D9" android:pathData="M819,172 H945 V193 H819 Z"/>
+    <path android:fillColor="#8D463B" android:pathData="M819,195 H945 V199 H819 Z"/>
+    <path android:fillColor="#111C1E" android:pathData="M826,229 H856 V259 H826 Z M869,229 H899 V259 H869 Z M912,229 H942 V259 H912 Z M826,273 H856 V303 H826 Z M869,273 H899 V303 H869 Z M912,273 H942 V303 H912 Z M826,317 H856 V347 H826 Z M869,317 H899 V347 H869 Z M912,317 H942 V347 H912 Z M869,364 H899 V394 H869 Z"/>
+    <path android:fillColor="#5C6B6D" android:pathData="M833,234 H850 V250 H833 Z M876,234 H893 V250 H876 Z M919,234 H936 V250 H919 Z M833,278 H850 V294 H833 Z M876,278 H893 V294 H876 Z M919,278 H936 V294 H919 Z M833,322 H850 V338 H833 Z M876,322 H893 V338 H876 Z M919,322 H936 V338 H919 Z M876,369 H893 V385 H876 Z"/>
+    <path android:fillColor="#7C817B" android:pathData="M810,484 H952 V650 H810 Z"/>
+    <path android:strokeColor="#414B4D" android:strokeWidth="3" android:pathData="M810,493 H952 M810,501 H952 M810,509 H952 M810,517 H952 M810,525 H952 M810,533 H952 M810,541 H952 M810,549 H952 M810,557 H952 M810,565 H952 M810,573 H952 M810,581 H952 M810,589 H952 M810,597 H952 M810,605 H952 M810,613 H952 M810,621 H952 M810,629 H952 M810,637 H952"/>
+    <path android:strokeColor="#C8CCC3" android:strokeWidth="2" android:pathData="M824,486 V648 M836,486 V648 M848,486 V648 M860,486 V648 M872,486 V648 M884,486 V648 M896,486 V648 M908,486 V648 M920,486 V648 M932,486 V648 M944,486 V648"/>
+</vector>
