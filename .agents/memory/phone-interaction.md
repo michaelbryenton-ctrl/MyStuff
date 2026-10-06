@@ -17,6 +17,8 @@ Gamepad support is an additional selectable input source, not a replacement for 
 
 **Why:** The user approved basic USB gamepad support explicitly while keeping the existing touch controls.
 
+The user confirmed that gamepad input works on their Android device. The controller model was not specified; this confirms their setup, not universal controller compatibility.
+
 **How to apply:** Keep the two input models independent, retain the joystick port selector, and require real Android/controller verification before claiming hardware compatibility.
 
 ## CoCo display and cassette expectations
