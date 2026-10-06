@@ -107,8 +107,8 @@ final class MachineProfile {
         arguments.add(directory.getAbsolutePath());
         arguments.add("-machine");
         arguments.add(id);
-        // Each port has its own config. The JNI source keeps the unselected
-        // port neutral and preserves the selected stick's absolute position.
+        // Touch and Android gamepad input share this JNI source, selected by
+        // the UI without restarting XRoar. The inactive port stays neutral.
         for (int port = 0; port < 2; port++) {
             arguments.add("-joy");
             arguments.add("android-touch-" + port);

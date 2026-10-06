@@ -11,6 +11,14 @@ The user described the CoCo joystick as a non-centered analog stick with a singl
 
 **How to apply:** Keep picture and controls in separate layout regions. Preserve absolute analog position after finger lift-off. Explain any proposed change to this input model before replacing it.
 
+## Physical controller compatibility
+
+Gamepad support is an additional selectable input source, not a replacement for touch. Physical sticks may spring-center normally, but adding or revising gamepad support must not change the touch joystick's latched position behavior.
+
+**Why:** The user approved basic USB gamepad support explicitly while keeping the existing touch controls.
+
+**How to apply:** Keep the two input models independent, retain the joystick port selector, and require real Android/controller verification before claiming hardware compatibility.
+
 ## CoCo display and cassette expectations
 
 The user requested a CoCo bezel based on their picture of the TRS-80 13-inch Color Video Receiver, with live emulation inside the TV opening and the keyboard/joystick controls below.

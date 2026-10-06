@@ -84,3 +84,17 @@ mtime_ms = 1791247146335
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:561507c3-2e95-4312-aa5e-72f7a9582e6e/6482f1c1-d99e-4f92-9c13-015abd5e05db/c9b5e874-35ee-4311-ac57-77da0c05c3fe"
 storage_version_token = "1791247176013399"
 content_type = "application/octet-stream"
+
+[[outputs]]
+id = "_7rb9UIrLsqXIxUz2RiJx"
+uri = "file://android/app/build/outputs/apk/debug/xroar-1.0.6-debug.apk"
+type = "unspecified"
+title = "XRoar Android 1.0.6 — USB gamepad controls"
+description = "Adds Touch/Gamepad selection below the display, left-stick and D-pad movement, A-button fire, connected-controller status and right/left joystick port selection. Preserves touch's non-centering behavior and releases gamepad inputs on disconnect or focus loss. Build, input-model and update-signing checks passed; actual Android controller use is not yet verified."
+logical_id = "6a7b99fa-eeb8-43b6-bf17-77cbbf730979"
+content_hash = "sha256:84da3f0df6e24f905821403b8f3332c78b55b20e0f0a45265104a21aed9b056a"
+size = 5795599
+mtime_ms = 1791248210047
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:561507c3-2e95-4312-aa5e-72f7a9582e6e/6a7b99fa-eeb8-43b6-bf17-77cbbf730979/c501fb28-20ef-4d63-9751-953dd6d500ef"
+storage_version_token = "1791248286422244"
+content_type = "application/octet-stream"

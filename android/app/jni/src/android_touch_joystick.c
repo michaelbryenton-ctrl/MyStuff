@@ -5,9 +5,9 @@
 #include <SDL3/SDL.h>
 #include "joystick.h"
 
-/* Android's UI thread publishes values; the emulator reads them at its own
- * rate. Absolute positions persist after lift-off, like a non-centering stick.
- * The inactive port is neutral, not a mirrored second joystick. */
+/* Android's UI thread publishes the selected touch/gamepad source; the
+ * emulator reads at its own rate. Touch latching and gamepad centering are
+ * handled by Java. The inactive port is neutral, not a mirrored joystick. */
 static SDL_AtomicInt axes[2] = {{32768}, {32768}};
 static SDL_AtomicInt fire;
 static SDL_AtomicInt active_port;

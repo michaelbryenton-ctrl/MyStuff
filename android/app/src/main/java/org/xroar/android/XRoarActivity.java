@@ -9,6 +9,7 @@ import android.text.InputType;
 import android.view.Gravity;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -25,6 +26,8 @@ public final class XRoarActivity extends SDLActivity {
     private static native boolean nativeTapKey(int scancode);
     private static native void nativeTouchJoystick(int x, int y, boolean fire, int port);
     private TouchJoystickView joystick;
+    private GamepadInput gamepad;
+    private boolean resumed;
 
     private void tapKey(int scancode) {
         if (!nativeTapKey(scancode)) {
@@ -34,6 +37,7 @@ public final class XRoarActivity extends SDLActivity {
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
+        if (gamepad != null && gamepad.key(event)) return true;
         // Some phone keyboards send Enter/Delete as key events rather than committed text.
         boolean virtual = event.getDeviceId() == KeyCharacterMap.VIRTUAL_KEYBOARD
                 || (event.getFlags() & KeyEvent.FLAG_SOFT_KEYBOARD) != 0;
@@ -45,6 +49,11 @@ public final class XRoarActivity extends SDLActivity {
             return true;
         }
         return super.dispatchKeyEvent(event);
+    }
+
+    @Override public boolean dispatchGenericMotionEvent(MotionEvent event) {
+        if (gamepad != null && gamepad.motion(event)) return true;
+        return super.dispatchGenericMotionEvent(event);
     }
 
     @Override
@@ -107,31 +116,52 @@ public final class XRoarActivity extends SDLActivity {
         layout.addView(controls, new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, dp(52)));
         joystick = new TouchJoystickView(this, (x, y, fire, port) -> {
-            if (!mBrokenLibraries && !mSDLMainFinished)
+            if (!mBrokenLibraries && !mSDLMainFinished && (gamepad == null || !gamepad.isEnabled()))
                 nativeTouchJoystick(x, y, fire, port);
+        });
+        gamepad = new GamepadInput(this, (x, y, fire, selectedPort, deviceName) -> {
+            if (!mBrokenLibraries && !mSDLMainFinished)
+                nativeTouchJoystick(x, y, fire, selectedPort);
+            joystick.showGamepad(deviceName, x, y, fire);
         });
         Button port = new Button(this);
         port.setAllCaps(false);
-        port.setText("Joystick: Right · switch");
+        port.setText("Port: Right");
         port.setTextSize(13);
         port.setTextColor(Color.WHITE);
         port.setBackgroundTintList(android.content.res.ColorStateList.valueOf(
                 Color.rgb(29, 55, 71)));
-        port.setOnClickListener(view -> port.setText("Joystick: "
-                + (joystick.switchPort() == 0 ? "Right" : "Left") + " · switch"));
+        port.setOnClickListener(view -> {
+            int selectedPort = joystick.switchPort();
+            gamepad.setPort(selectedPort);
+            port.setText("Port: " + (selectedPort == 0 ? "Right" : "Left"));
+        });
         port.setMinWidth(0);
         port.setMinimumWidth(0);
         LinearLayout sessionControls = new LinearLayout(this);
         sessionControls.setOrientation(LinearLayout.HORIZONTAL);
         sessionControls.addView(port, new LinearLayout.LayoutParams(
-                0, ViewGroup.LayoutParams.MATCH_PARENT, 3));
+                0, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+        Button source = new Button(this);
+        source.setText("Input: Touch");
+        source.setAllCaps(false);
+        source.setTextColor(Color.WHITE);
+        source.setBackgroundTintList(android.content.res.ColorStateList.valueOf(
+                Color.rgb(29, 55, 71)));
+        source.setOnClickListener(view -> {
+            joystick.cancelFire();
+            gamepad.setEnabled(!gamepad.isEnabled());
+            joystick.setGamepadMode(gamepad.isEnabled());
+            source.setText(gamepad.isEnabled() ? "Input: Gamepad" : "Input: Touch");
+        });
+        addControl(sessionControls, source);
         Button exit = new Button(this);
         exit.setText("Exit app");
         exit.setAllCaps(false);
         exit.setTextColor(Color.WHITE);
         exit.setBackgroundTintList(android.content.res.ColorStateList.valueOf(
                 Color.rgb(29, 55, 71)));
-        exit.setOnClickListener(view -> AppExit.confirm(this, () -> joystick.cancelFire()));
+        exit.setOnClickListener(view -> AppExit.confirm(this, this::releaseInput));
         addControl(sessionControls, exit);
         layout.addView(sessionControls, new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, dp(44)));
@@ -159,12 +189,29 @@ public final class XRoarActivity extends SDLActivity {
     }
 
     @Override protected void onPause() {
-        if (joystick != null) joystick.cancelFire();
+        resumed = false;
+        releaseInput();
         super.onPause();
     }
 
-    private void returnToLibrary() {
+    @Override protected void onResume() {
+        super.onResume();
+        resumed = true;
+        if (gamepad != null) gamepad.setActive(hasWindowFocus());
+    }
+
+    @Override protected void onDestroy() {
+        if (gamepad != null) gamepad.close();
+        super.onDestroy();
+    }
+
+    private void releaseInput() {
+        if (gamepad != null) gamepad.setActive(false);
         if (joystick != null) joystick.cancelFire();
+    }
+
+    private void returnToLibrary() {
+        releaseInput();
         // Reuse the existing library rather than creating another copy. It
         // lives in the main process, so XRoar's exit() during SDL teardown
         // cannot kill it. Both activities remain in the same Android task.
@@ -175,7 +222,8 @@ public final class XRoarActivity extends SDLActivity {
     }
 
     @Override public void onWindowFocusChanged(boolean focused) {
-        if (!focused && joystick != null) joystick.cancelFire();
+        if (!focused) releaseInput();
+        else if (gamepad != null) gamepad.setActive(resumed);
         super.onWindowFocusChanged(focused);
     }
 

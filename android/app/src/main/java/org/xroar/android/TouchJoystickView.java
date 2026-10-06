@@ -18,6 +18,10 @@ final class TouchJoystickView extends View {
     private final Output output;
     private int pointer = -1;
     private int port;
+    private boolean gamepadMode;
+    private String gamepadName = "connect a controller";
+    private int gamepadX = 32768, gamepadY = 32768;
+    private boolean gamepadFire;
     private final Runnable updateFire = this::publish;
 
     TouchJoystickView(Context context, Output output) {
@@ -55,6 +59,22 @@ final class TouchJoystickView extends View {
         publish();
     }
 
+    void setGamepadMode(boolean enabled) {
+        gamepadMode = enabled;
+        cancelFire();
+        setContentDescription(enabled ? "Gamepad input. Left stick or D-pad moves; A fires."
+                : "Absolute analog joystick. Drag to move. Double tap to fire; "
+                + "hold the second tap for continuous fire. Position stays after release.");
+    }
+
+    void showGamepad(String name, int x, int y, boolean fire) {
+        gamepadName = name;
+        gamepadX = x;
+        gamepadY = y;
+        gamepadFire = fire;
+        invalidate();
+    }
+
     private void publish() {
         output.update(state.x, state.y, state.firing(SystemClock.uptimeMillis()), port);
         invalidate();
@@ -65,6 +85,7 @@ final class TouchJoystickView extends View {
     }
 
     boolean handleTouch(View source, MotionEvent event) {
+        if (gamepadMode) return true;
         gestures.onTouchEvent(event);
         int action = event.getActionMasked();
         if (action == MotionEvent.ACTION_CANCEL) {
@@ -107,9 +128,13 @@ final class TouchJoystickView extends View {
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setTextSize(dp(14));
         paint.setColor(Color.rgb(202, 219, 228));
-        canvas.drawText("Touch or drag — position stays", getWidth() / 2f, dp(22), paint);
+        String heading = gamepadMode ? "Gamepad: " + gamepadName : "Touch or drag — position stays";
+        int length = paint.breakText(heading, true, getWidth() - dp(32), null);
+        if (length < heading.length()) heading = heading.substring(0, Math.max(0, length - 1)) + "…";
+        canvas.drawText(heading, getWidth() / 2f, dp(22), paint);
         paint.setTextSize(dp(12));
-        canvas.drawText("Double-tap to fire · hold second tap to keep firing",
+        canvas.drawText(gamepadMode ? "Left stick / D-pad moves · A fires · touch disabled"
+                : "Double-tap to fire · hold second tap to keep firing",
                 getWidth() / 2f, dp(42), paint);
         float left = dp(16), top = dp(52), right = getWidth() - left;
         float bottom = getHeight() - left;
@@ -120,9 +145,9 @@ final class TouchJoystickView extends View {
         canvas.drawLine((left + right) / 2, top, (left + right) / 2, bottom, paint);
         canvas.drawLine(left, (top + bottom) / 2, right, (top + bottom) / 2, paint);
         paint.setStyle(Paint.Style.FILL);
-        paint.setColor(state.firing(SystemClock.uptimeMillis())
+        paint.setColor((gamepadMode ? gamepadFire : state.firing(SystemClock.uptimeMillis()))
                 ? Color.rgb(255, 154, 89) : Color.rgb(87, 198, 226));
-        canvas.drawCircle(left + state.x / 65535f * (right - left),
-                top + state.y / 65535f * (bottom - top), dp(9), paint);
+        canvas.drawCircle(left + (gamepadMode ? gamepadX : state.x) / 65535f * (right - left),
+                top + (gamepadMode ? gamepadY : state.y) / 65535f * (bottom - top), dp(9), paint);
     }
 }

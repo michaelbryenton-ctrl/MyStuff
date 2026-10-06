@@ -49,6 +49,12 @@ Touch or drag on the emulator display or the lower joystick pad for absolute ana
 
 ## Source and licenses
 
+**USB gamepads:** Connect an Android-recognized gamepad using your phone's USB host/OTG connection. On the emulator screen, tap **Input: Touch** to select **Input: Gamepad**. The lower pad shows the connected controller name and live stick/fire state, or asks you to connect a controller. The left stick or D-pad moves; **A** fires (D-pad center is also accepted on controllers that report it). **Port: Right/Left** selects the CoCo joystick port. Only the first available controller is used. Unplugging, leaving the app, switching source/port, or losing window focus releases gamepad input. USB recognition and button layouts depend on the Android device/controller; there is no raw-USB driver or custom button remapping in this version.
+
+Touch remains the default. Switching back to Touch restores its previous non-centering position; gamepad movement spring-centers with the physical stick. Phone Keyboard/Enter/Space controls remain available in either mode. The Input and Port selectors sit below the picture, alongside Exit app.
+
+Run `bash android/test-gamepad.sh` for axis normalization, dead zones, both D-pad forms, fire timing and state reset tests. Run `bash android/test-touch-joystick.sh` for touch behavior and native port isolation. These host checks do not replace a real Android controller test.
+
 **Exit app** is available in both the library and emulator controls. Confirming it stops the current session and removes the app's task from Recents; **Cancel** leaves the app open. Imported ROMs/media and library preferences are retained. The library's Exit button is temporarily disabled during file imports so a copy is not interrupted.
 
 The CoCo display has a decorative bezel inspired by the TRS-80 13-inch Color Video Receiver. Its CRT opening contains the live SDL display; it does not add scanlines or tint. Dragon and MC-10 displays keep their plain frame.
