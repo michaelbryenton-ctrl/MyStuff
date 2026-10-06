@@ -98,3 +98,10 @@ mtime_ms = 1791248210047
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:561507c3-2e95-4312-aa5e-72f7a9582e6e/6a7b99fa-eeb8-43b6-bf17-77cbbf730979/c501fb28-20ef-4d63-9751-953dd6d500ef"
 storage_version_token = "1791248286422244"
 content_type = "application/octet-stream"
+
+[[outputs]]
+id = "LdinJ43vlRyYHOBS7nV3d"
+uri = "file://artifacts/xroar-film/public/audio/bg_music.mp3"
+type = "audio"
+title = "XRoar retro synth instrumental"
+description = "Generated music: Original playful retro-computing chiptune and synthwave instrumental for a 25-second Android CoCo emulator project showcase. Warm square-wave arpeggios, rounded analog synth bass, cr…"

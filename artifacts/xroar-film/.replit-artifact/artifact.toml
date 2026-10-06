@@ -1,0 +1,29 @@
+kind = "video"
+videoAspectRatio = "16:9"
+previewPath = "/xroar-film/"
+title = "XRoar — CoCo in your hands"
+description = "A 25-second landscape animated showcase of the native Android XRoar project, its retro CoCo display, media loading and touch/gamepad controls."
+version = "1.0.0"
+id = "artifacts/xroar-film"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/xroar-film/" ]
+localPort = 21164
+
+[services.development]
+run = "pnpm --filter @workspace/xroar-film run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/xroar-film", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/xroar-film/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21164"
+BASE_PATH = "/xroar-film/"
