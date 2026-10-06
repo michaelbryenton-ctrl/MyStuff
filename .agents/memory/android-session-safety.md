@@ -26,3 +26,9 @@ Having the same SDK and source in a task copy does not mean having the same APK 
 **Why:** Debug keystores belong to the build environment, not the source checkout. A different signing certificate makes Android reject an update. The user previously had to uninstall to install an APK; the exact original installation error was not available, so a certificate mismatch was not conclusively established.
 
 **How to apply:** Compare updates against the previously distributed APK's public certificate and version. Do not regenerate a key or replace the pinned public identity to bypass an update check. If the original key is unavailable, report that blocker and use secure key restoration rather than recommending uninstall, which deletes imported files. Never store private keys in source control or memory.
+
+A missing SDK directory or empty `~/.android` does not prove the signing key is lost. Check Android's effective configuration home before drawing that conclusion.
+
+**Why:** After a build-environment reset, the SDK was absent but the original signing key survived in the workspace's XDG configuration storage. Its public fingerprint still matched the distributed APK.
+
+**How to apply:** Locate the existing key and verify only its public certificate; restore the already-licensed SDK tools rather than generating another signing identity.

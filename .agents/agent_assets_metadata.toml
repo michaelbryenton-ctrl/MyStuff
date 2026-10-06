@@ -70,3 +70,17 @@ mtime_ms = 1791236678448
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:561507c3-2e95-4312-aa5e-72f7a9582e6e/370cff6a-9079-4bdc-a6ab-3823b4c833d5/4517bb74-d667-4532-a0f5-ca236f5c5667"
 storage_version_token = "1791236701564292"
 content_type = "application/octet-stream"
+
+[[outputs]]
+id = "2jBee4VMt75AivqJz8uGr"
+uri = "file://android/app/build/outputs/apk/debug/xroar-1.0.5-debug.apk"
+type = "unspecified"
+title = "XRoar Android 1.0.5 — Your launcher icon"
+description = "Uses your supplied XRoar artwork as the APK launcher icon, with crisp pixel scaling and adaptive support for modern Android launchers. Build and signing checks passed; install over the existing app without uninstalling."
+logical_id = "6482f1c1-d99e-4f92-9c13-015abd5e05db"
+content_hash = "sha256:68034cee8233bb5030cf8f3abd4dee62a44674158069ac31c97f8e01c4b72279"
+size = 5791078
+mtime_ms = 1791247146335
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:561507c3-2e95-4312-aa5e-72f7a9582e6e/6482f1c1-d99e-4f92-9c13-015abd5e05db/c9b5e874-35ee-4311-ac57-77da0c05c3fe"
+storage_version_token = "1791247176013399"
+content_type = "application/octet-stream"
