@@ -75,6 +75,8 @@ onlyBuiltDependencies:
   - unrs-resolver
 
 overrides:
+  # GHSA-jqcg-44mw-7w3h: prevent IP spoofing through IPv6 trust subnets.
+  proxy-addr: '2.0.8'
   # replit uses linux-x64 only, we can exclude all other platforms
   "esbuild>@esbuild/darwin-arm64": "-"
   "esbuild>@esbuild/darwin-x64": "-"
