@@ -105,3 +105,32 @@ uri = "file://artifacts/xroar-film/public/audio/bg_music.mp3"
 type = "audio"
 title = "XRoar retro synth instrumental"
 description = "Generated music: Original playful retro-computing chiptune and synthwave instrumental for a 25-second Android CoCo emulator project showcase. Warm square-wave arpeggios, rounded analog synth bass, cr…"
+logical_id = "a284aa92-7ab2-430c-aa9c-9295bcef5d01"
+
+[[outputs]]
+id = "5kGCbDLKqt8cJMHdmMoZN"
+uri = "file://generated-artifacts/android/xroar-1.0.7-debug.apk"
+type = "unspecified"
+title = "XRoar Android 1.0.7"
+description = "Update-compatible APK with selectable Direct and CoCo position-hold gamepad modes. Same signing certificate, versionCode 8, four Android architectures, no bundled ROMs."
+logical_id = "54a32f11-67d0-4f63-b6aa-20d1d3da6da5"
+content_hash = "sha256:97218515c3fd43052c820beec3e993e8cc49622ab687f654cb4c29f67221e4c4"
+size = 5797045
+mtime_ms = 1791927723117
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:561507c3-2e95-4312-aa5e-72f7a9582e6e/54a32f11-67d0-4f63-b6aa-20d1d3da6da5/3a8ca693-cbf4-4eec-b51a-ed299b0e2d92"
+storage_version_token = "1791927782021559"
+content_type = "application/octet-stream"
+
+[[outputs]]
+id = "CdAzD-tjIiEVjDVbyTVQJ"
+uri = "file://generated-artifacts/android/xroar-1.0.7-user-guide.pdf"
+type = "pdf"
+title = "XRoar Android 1.0.7 — User Guide"
+description = "Five-page guide covering installation, ROM and media setup, keyboard and touch controls, Direct and CoCo position-hold gamepad modes, implementation details, safety resets, and troubleshooting."
+logical_id = "6957c84c-3fa9-4d21-943b-14e3cf79ff25"
+content_hash = "sha256:54991a497662652bd9ff4000f3408a741aafcbc6bfff438140f0cc7e9b2b93bf"
+size = 107502
+mtime_ms = 1791927941112
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:561507c3-2e95-4312-aa5e-72f7a9582e6e/6957c84c-3fa9-4d21-943b-14e3cf79ff25/5c5b671f-43c0-48fb-b293-34487856ded0"
+storage_version_token = "1791927949909968"
+content_type = "application/pdf"

@@ -17,6 +17,7 @@ final class GamepadInput implements InputManager.InputDeviceListener {
     private final GamepadState state = new GamepadState();
     private final Output output;
     private final Runnable finishPulse = this::publish;
+    private final Runnable movementTick = this::publish;
     private boolean enabled, active, closed;
     private int deviceId = -1, port;
 
@@ -30,6 +31,13 @@ final class GamepadInput implements InputManager.InputDeviceListener {
     }
 
     boolean isEnabled() { return enabled; }
+    boolean isPositionHold() { return state.isPositionHold(); }
+
+    void setPositionHold(boolean value) {
+        reset();
+        state.setPositionHold(value);
+        publish();
+    }
 
     void setEnabled(boolean value) {
         reset();
@@ -73,6 +81,7 @@ final class GamepadInput implements InputManager.InputDeviceListener {
                 break;
             }
         }
+        handler.removeCallbacks(movementTick);
         state.reset();
         publish();
     }
@@ -86,6 +95,7 @@ final class GamepadInput implements InputManager.InputDeviceListener {
         if (deviceId == -1) refreshDevices(-1);
         if (device.getId() != deviceId || event.getActionMasked() != MotionEvent.ACTION_MOVE)
             return true;
+        state.advance(SystemClock.uptimeMillis());
         state.motion(axis(event, device, MotionEvent.AXIS_X),
                 axis(event, device, MotionEvent.AXIS_Y),
                 axis(event, device, MotionEvent.AXIS_HAT_X),
@@ -110,6 +120,7 @@ final class GamepadInput implements InputManager.InputDeviceListener {
             case KeyEvent.KEYCODE_DPAD_UP: mapped = GamepadState.UP; break;
             case KeyEvent.KEYCODE_DPAD_DOWN: mapped = GamepadState.DOWN; break;
             case KeyEvent.KEYCODE_BUTTON_A: mapped = GamepadState.FIRE; break;
+            case KeyEvent.KEYCODE_BUTTON_B: mapped = GamepadState.RECENTER; break;
             case KeyEvent.KEYCODE_DPAD_CENTER: mapped = GamepadState.CENTER_FIRE; break;
             default: return KeyEvent.isGamepadButton(event.getKeyCode());
         }
@@ -130,16 +141,22 @@ final class GamepadInput implements InputManager.InputDeviceListener {
 
     private void reset() {
         handler.removeCallbacks(finishPulse);
+        handler.removeCallbacks(movementTick);
         state.reset();
         publish();
     }
 
     private void publish() {
         if (!enabled || closed) return;
+        long now = SystemClock.uptimeMillis();
+        state.advance(now);
         InputDevice device = manager == null ? null : manager.getInputDevice(deviceId);
         String name = manager == null ? "input unavailable"
                 : device == null ? "connect a controller" : device.getName();
-        output.update(state.x(), state.y(), state.firing(SystemClock.uptimeMillis()), port, name);
+        output.update(state.x(), state.y(), state.firing(now), port, name);
+        handler.removeCallbacks(movementTick);
+        if (active && device != null && state.needsTick())
+            handler.postDelayed(movementTick, 16);
     }
 
     @Override public void onInputDeviceAdded(int id) { refreshDevices(-1); }

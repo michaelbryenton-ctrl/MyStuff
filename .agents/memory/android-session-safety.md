@@ -32,3 +32,9 @@ A missing SDK directory or empty `~/.android` does not prove the signing key is 
 **Why:** After a build-environment reset, the SDK was absent but the original signing key survived in the workspace's XDG configuration storage. Its public fingerprint still matched the distributed APK.
 
 **How to apply:** Locate the existing key and verify only its public certificate; restore the already-licensed SDK tools rather than generating another signing identity.
+
+Keep delivered APK copies and comparison APKs outside Gradle's build-output directory, in an ignored generated-artifact archive.
+
+**Why:** Gradle can remove extra APK copies from its output directory when packaging the next version, leaving no previous binary for a side-by-side update comparison.
+
+**How to apply:** Preserve the previous APK outside the build tree before assembling an update. Verify the new APK against the pinned public certificate even if no prior binary remains available.

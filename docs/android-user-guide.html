@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XRoar Android 1.0.7 — User Guide</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body { margin: 0; color: #192c39; background: #eef3f6; font: 15px/1.5 Arial, sans-serif; }
+  main { max-width: 850px; margin: 30px auto; }
+  .page { background: white; padding: 42px 48px; margin-bottom: 24px; }
+  .eyebrow { color: #356477; font-size: 12px; font-weight: bold; letter-spacing: 1.2px; text-transform: uppercase; }
+  h1 { font-size: 36px; line-height: 1.15; margin: 10px 0 14px; }
+  h2 { font-size: 25px; line-height: 1.2; margin: 8px 0 20px; }
+  h3 { font-size: 17px; margin: 20px 0 7px; }
+  p { margin: 9px 0; }
+  ul, ol { padding-left: 23px; margin: 8px 0; }
+  li { margin: 5px 0; }
+  .lead { font-size: 18px; color: #48606d; }
+  .note { border-left: 4px solid #397990; background: #f0f6f8; padding: 10px 14px; margin: 15px 0; }
+  .warning { border-left-color: #ab602b; background: #fff7ef; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
+  th, td { text-align: left; vertical-align: top; border-bottom: 1px solid #dce6ec; padding: 9px 10px; }
+  th { background: #edf4f7; color: #254f61; }
+  code { font-family: monospace; font-size: .95em; }
+  .footer { border-top: 1px solid #dce6ec; padding-top: 10px; margin-top: 22px; color: #536b78; font-size: 12px; }
+  @page { size: Letter; margin: 0.6in; }
+  @media print {
+    body { background: white; font-size: 10.5pt; line-height: 1.42; }
+    main { margin: 0; max-width: none; }
+    .page { padding: 0; margin: 0; break-after: page; }
+    .page:last-child { break-after: auto; }
+    h1 { font-size: 30pt; } h2 { font-size: 21pt; } h3 { font-size: 12pt; }
+    .lead { font-size: 12pt; } table { font-size: 9.5pt; }
+    h3, th { break-after: avoid; } tr, .note { break-inside: avoid; }
+    * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    .reference { font-size: 10pt; line-height: 1.32; }
+    .reference table { font-size: 9pt; }
+    .reference td, .reference th { padding: 7px 9px; }
+    .reference h3 { margin-top: 15px; }
+    .reference .footer { margin-top: 15px; }
+  }
+</style>
+</head>
+<body>
+<main>
+<section class="page">
+  <div class="eyebrow">Native Android • Version 1.0.7</div>
+  <h1>XRoar user guide</h1>
+  <p class="lead">Setup, everyday controls, and the new CoCo position-hold gamepad method.</p>
+  <p>XRoar emulates Dragon, Tandy Color Computer (CoCo), and Tandy MC-10 computers. This Android edition uses native emulation and does not include machine ROMs or game media.</p>
+  <div class="note warning"><strong>Updating an existing installation:</strong> Install <code>xroar-1.0.7-debug.apk</code> over the existing app. Do not uninstall first: uninstalling or clearing app storage deletes imported ROMs and media. Keep your original files outside the app as backups.</div>
+
+  <h3>1. Install and select a computer</h3>
+  <ol>
+    <li>Open the APK on your Android device. If Android requests it, allow installation from the app you used to open the file; you can disable that permission afterward.</li>
+    <li>Open XRoar. In <strong>Computer to emulate</strong>, choose the machine matching your firmware and software.</li>
+    <li>Tap <strong>Import ROM files</strong> and select firmware you are entitled to use. Extract firmware ZIPs first; import the ROM files themselves.</li>
+  </ol>
+  <p>Available choices are CoCo NTSC/PAL, CoCo 3 NTSC/PAL, Dragon 32, Dragon 64, and MC-10. Android 5.0 or later is required.</p>
+
+  <h3>2. Supply the correct firmware</h3>
+  <p>For a standard CoCo, normally import <strong>Color BASIC</strong> (<code>bas12.rom</code>, or supported <code>bas10</code>–<code>bas13</code>) and <strong>Extended Color BASIC</strong> (<code>extbas11.rom</code> or <code>extbas10.rom</code>). A supported 16 KB combined image named <code>coco.rom</code> can supply both halves.</p>
+  <p><code>extbas11.rom</code> alone is usually not the complete firmware. A <code>.ccc</code> game is a cartridge, not machine firmware. Other machines need their own ROMs; follow the launcher's missing-firmware message and suggested filename. Preserve recognized filenames rather than renaming firmware arbitrarily.</p>
+
+  <h3>3. Choose software and start</h3>
+  <p>Tap <strong>Choose cartridge, tape, disk, or program</strong>, select your software, and then tap <strong>Start XRoar</strong>. Imported files are copied to the app's private storage. A selected <code>.ccc</code> cartridge is launched with autorun enabled.</p>
+  <div class="footer">1 / 5 • Setup and installation</div>
+</section>
+
+<section class="page">
+  <div class="eyebrow">Everyday use</div>
+  <h2>Display, keyboard, and media</h2>
+  <p>The emulator picture sits in the top half of the window. Controls occupy separate rows below it, not over the picture. CoCo machines have a receiver-style bezel around the live display; Dragon and MC-10 use a plain frame.</p>
+
+  <table>
+    <thead><tr><th>Control</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Keyboard</strong></td><td>Shows the Android keyboard for typing BASIC commands or answering prompts. An Android-recognized USB or Bluetooth keyboard can also be used.</td></tr>
+      <tr><td><strong>Enter / Space</strong></td><td>Sends the corresponding key directly, useful at game title screens and prompts.</td></tr>
+      <tr><td><strong>Library</strong></td><td>Ends the current emulator session and returns to the existing library. Starting again begins a fresh session, not a resume of the previous emulated state.</td></tr>
+      <tr><td><strong>Exit app</strong></td><td>Asks for confirmation, then closes the app's task. Cancel leaves it open. Imported files and library preferences remain stored.</td></tr>
+      <tr><td><strong>Port: Right / Left</strong></td><td>Selects the emulated joystick socket. The other socket stays neutral. Choose the socket expected by the game.</td></tr>
+    </tbody>
+  </table>
+  <p>Hide the phone keyboard with Android's keyboard-dismiss control or Back when you no longer need it. Phone-keyboard taps use a short emulated hold and gap so software can detect them; physical keyboards retain normal held-key behavior.</p>
+
+  <h3>Cassettes and ZIP archives</h3>
+  <ul>
+    <li>Select cassette files through the media picker, not <strong>Import ROM files</strong>.</li>
+    <li>A ZIP containing one CAS and a same-named WAV is extracted and the CAS is selected.</li>
+    <li>If an archive contains several different programs, extract it yourself and select the intended file.</li>
+    <li>If an older imported ZIP prompts you to select it again, choose it again through the media picker so the tape can be extracted.</li>
+  </ul>
+  <p>At startup, tape autorun examines the tape header. Machine-code tapes use <code>CLOADM</code> and, where appropriate, <code>EXEC</code>; BASIC tapes use <code>CLOAD</code> and <code>RUN</code>. Normally you do not need to type those loading commands yourself for a selected supported cassette. Some programs still require their own title-screen input.</p>
+
+  <h3>Storage and session limits</h3>
+  <p>Imports preserve the source files' names and leave the originals outside the app untouched. Returning to the library or exiting preserves imported files, but does not promise to save current emulated RAM, progress, or changes made by a running program. Keep separate backups of valuable files.</p>
+  <div class="footer">2 / 5 • General usage</div>
+</section>
+
+<section class="page">
+  <div class="eyebrow">Input reference</div>
+  <h2>Touch and Direct gamepad controls</h2>
+
+  <h3>Touch: the default input source</h3>
+  <ol>
+    <li>Leave the selector on <strong>Input: Touch</strong>.</li>
+    <li>Touch or drag on the emulator display or lower pad to select an absolute analog position.</li>
+    <li>Lift your finger: the selected position stays where you left it.</li>
+    <li>Double-tap to fire. Hold the second tap for continuous fire; lift to release.</li>
+  </ol>
+  <p>A quick fire tap produces a minimum 120-millisecond pulse so the emulated CPU can observe it. This remains the original non-centering touch behavior; the new gamepad mode does not replace it.</p>
+
+  <h3>Connect a gamepad</h3>
+  <ol>
+    <li>Connect an Android-recognized controller. For USB, use a suitable USB host/OTG connection supported by your phone.</li>
+    <li>In the emulator, tap <strong>Input: Touch</strong> to switch to <strong>Input: Gamepad</strong>.</li>
+    <li>Check the controller name and live position/fire indication in the lower pad. “Connect a controller” means no supported controller is currently selected.</li>
+    <li>Choose <strong>Port: Right</strong> or <strong>Port: Left</strong> as required by the game.</li>
+  </ol>
+  <p>The app uses the first available controller. Touch movement is disabled while Gamepad input is selected. Keyboard, Enter, and Space remain available. Switching back to Touch restores its independently stored touch position.</p>
+
+  <h3>Direct mode: unchanged original mapping</h3>
+  <p>The first gamepad mode is <strong>Gamepad: Direct</strong>. Left-stick displacement maps directly to the full emulated analog range. If your physical stick springs back to its centre, the emulated position centres too.</p>
+  <ul>
+    <li><strong>D-pad:</strong> selects directional extremes and overrides the stick while used. Opposing directions cancel.</li>
+    <li><strong>A:</strong> fires. Holding A keeps fire pressed; quick taps retain the minimum pulse.</li>
+    <li><strong>D-pad centre:</strong> also fires on controllers that report that button.</li>
+    <li><strong>B:</strong> has no recenter action in Direct mode.</li>
+  </ul>
+  <div class="note">Controller recognition and button layouts depend on Android and the controller. This version has no raw-USB driver or custom button-remapping screen.</div>
+  <div class="footer">3 / 5 • Existing input methods</div>
+</section>
+
+<section class="page">
+  <div class="eyebrow">New in 1.0.7</div>
+  <h2>CoCo position-hold gamepad method</h2>
+  <p>A spring-centred gamepad cannot physically behave like a non-centering CoCo joystick. This mode keeps a separate analog position in software: the stick controls <strong>how quickly that position changes</strong>, not the absolute position itself.</p>
+
+  <h3>Enable and use it</h3>
+  <ol>
+    <li>Select <strong>Input: Gamepad</strong>.</li>
+    <li>Tap <strong>Gamepad: Direct</strong>. The button changes to <strong>Gamepad: CoCo position-hold</strong>. The mode selector appears only in Gamepad input.</li>
+    <li>Deflect the left stick toward the desired position. A small deflection adjusts slowly; a larger deflection adjusts faster.</li>
+    <li>Release the stick to hold the current emulated position. Use the D-pad for slower, fine adjustments.</li>
+    <li>Press <strong>A</strong> to fire. Press <strong>B</strong> to centre both axes. Holding B keeps them centred, even if the stick is deflected.</li>
+  </ol>
+  <p>For example, push right briefly, release to keep that position, then tap left on the D-pad to make a small correction. Holding a direction continues adjusting even without new controller events. Press B when you want to return to neutral. Tap the mode button again to return to Direct.</p>
+
+  <table>
+    <thead><tr><th>Action</th><th>Direct</th><th>CoCo position-hold</th></tr></thead>
+    <tbody>
+      <tr><td>Left stick</td><td>Sets absolute position</td><td>Adjusts stored position at proportional speed</td></tr>
+      <tr><td>Release stick</td><td>Follows physical spring-centre</td><td>Keeps stored position</td></tr>
+      <tr><td>D-pad</td><td>Selects directional extremes</td><td>Makes slower fine adjustments</td></tr>
+      <tr><td>A / B</td><td>A fires; B has no recenter action</td><td>A fires; B centres</td></tr>
+    </tbody>
+  </table>
+
+  <h3>What “hold” means</h3>
+  <p>This is cursor-like relative positioning, not an exact absolute replica of a physical CoCo stick. The game interprets the held analog value: it may continue moving an object, maintain an aiming position, or behave differently. Releasing the controller does not necessarily stop motion inside the game.</p>
+  <div class="note warning"><strong>Safety resets override holding.</strong> Disconnection, app pause, focus loss, changing the input source or port, and changing gamepad mode centre the gamepad and release fire. The mode remains selected within the session, but stored position is not preserved through those resets. A new emulator session starts with Touch input and Direct gamepad mode.</div>
+  <div class="footer">4 / 5 • Position-hold operation</div>
+</section>
+
+<section class="page reference">
+  <div class="eyebrow">Reference and troubleshooting</div>
+  <h2>How it works and what to check</h2>
+
+  <h3>Implementation details</h3>
+  <ul>
+    <li>Each axis uses a range of 0–65,535; neutral is 32,768. Fractional position is retained internally and rounded for output.</li>
+    <li>Stick input is normalized with a dead zone of at least 15%, enlarged when the controller reports a larger dead zone. Speed is proportional to the normalized deflection outside it.</li>
+    <li>At full normalized deflection, stick speed is one full axis range per second. From neutral to an edge takes roughly half a second. D-pad speed is 8,192 units per second—about one eighth of full-stick speed.</li>
+    <li>The update loop requests an approximately 16-millisecond interval and integrates actual elapsed time. A delayed frame is capped at 100 milliseconds to avoid a large jump after a UI stall.</li>
+    <li>Position is clamped at the endpoints. D-pad input takes priority over the stick; both key-based and hat-axis D-pads are supported. Holding B suppresses adjustment until B is released.</li>
+    <li>A retains the existing minimum 120-millisecond fire pulse. The loop stops when adjustment is unnecessary; lifecycle resets cancel movement updates.</li>
+  </ul>
+
+  <h3>Troubleshooting</h3>
+  <table>
+    <thead><tr><th>Symptom</th><th>Check</th></tr></thead>
+    <tbody>
+      <tr><td>Missing firmware / won't start</td><td>Select the correct machine and import its required firmware with recognized filenames. Standard CoCo normally needs both BASIC halves; a cartridge is not firmware.</td></tr>
+      <tr><td>No gamepad response</td><td>Select Input: Gamepad, check the controller name and USB/OTG connection, and try the other emulated port. Additional controllers are not independently assigned.</td></tr>
+      <tr><td>Position snaps back on release</td><td>Verify the mode button reads Gamepad: CoCo position-hold. Direct follows the physical stick's spring-centre.</td></tr>
+      <tr><td>Game keeps moving after release</td><td>Position-hold intentionally retains the analog value. Press B to centre it, or use Direct if the game needs spring-centering behavior.</td></tr>
+      <tr><td>Position resets unexpectedly</td><td>A focus/pause, disconnect, source, port, or mode change intentionally clears gamepad state. This protects against stuck movement or fire.</td></tr>
+      <tr><td>Android rejects the update</td><td>Keep the installed app and its data. Do not uninstall as a workaround. Record Android's error; package/signing/version compatibility must be investigated.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Build and verification status</h3>
+  <p>Version 1.0.7 (version code 8) compiled for arm64-v8a, armeabi-v7a, x86, and x86_64. Its signing certificate matches the pinned update identity. Host regression checks passed, including 54 gamepad checks and touch/native-port, keyboard, launch, archive, and bezel checks.</p>
+  <p><strong>Hardware limitation:</strong> Direct gamepad operation was confirmed on the user's device. The new position-hold mode has not yet been verified on a physical Android controller in this workspace. Host tests do not establish universal controller compatibility or device installation success.</p>
+  <div class="footer">5 / 5 • XRoar Android 1.0.7 user guide • No ROMs or games are bundled</div>
+</section>
+</main>
+</body>
+</html>

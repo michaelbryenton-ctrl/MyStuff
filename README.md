@@ -37,6 +37,8 @@ Touch-joystick regression checks run with a JDK and C compiler: `bash android/te
 
 ## First run
 
+For step-by-step usage and the Direct/CoCo position-hold gamepad methods, see the printable [Android user guide](docs/android-user-guide.html).
+
 XRoar does not include copyrighted machine firmware. On the app's library screen, select the computer to emulate and import the ROM images you are entitled to use. The launcher reports missing firmware instead of allowing XRoar to fall back to a different machine. ROM files are copied into the app's private storage with their original filenames preserved.
 
 For **Tandy CoCo (NTSC)**, normally import both **Color BASIC** (`bas12.rom`, or another supported `bas10`–`bas13` image) and **Extended Color BASIC** (`extbas11.rom` or `extbas10.rom`). `extbas11.rom` alone is normally only the Extended BASIC half, not the complete firmware. A 16K combined firmware image named `coco.rom` is also supported. Firmware must retain a name recognised by the selected machine; the launcher shows a suggested filename when it is missing.
@@ -51,7 +53,7 @@ Touch or drag on the emulator display or the lower joystick pad for absolute ana
 
 **USB gamepads:** Connect an Android-recognized gamepad using your phone's USB host/OTG connection. On the emulator screen, tap **Input: Touch** to select **Input: Gamepad**. The lower pad shows the connected controller name and live stick/fire state, or asks you to connect a controller. The left stick or D-pad moves; **A** fires (D-pad center is also accepted on controllers that report it). **Port: Right/Left** selects the CoCo joystick port. Only the first available controller is used. Unplugging, leaving the app, switching source/port, or losing window focus releases gamepad input. USB recognition and button layouts depend on the Android device/controller; there is no raw-USB driver or custom button remapping in this version.
 
-Touch remains the default. Switching back to Touch restores its previous non-centering position; gamepad movement spring-centers with the physical stick. Phone Keyboard/Enter/Space controls remain available in either mode. The Input and Port selectors sit below the picture, alongside Exit app.
+Touch remains the default. Switching back to Touch restores its previous non-centering position. In Gamepad input, the separate **Gamepad: Direct** button below the picture toggles between **Direct** (the original spring-centering mapping) and **CoCo position-hold**. Position-hold uses the left stick to adjust a stored analog position at proportional speed; releasing it keeps that position. The D-pad makes slower, fine adjustments; **A** fires and **B** centres (holding B keeps it centred). This is cursor-like positioning, not an absolute replica of a physical non-centering CoCo stick. Mode changes, disconnection and focus/source/port changes reset the gamepad to neutral. Phone Keyboard/Enter/Space controls remain available in either mode. The Input and Port selectors sit below the picture, alongside Exit app; the mode button appears only for Gamepad input.
 
 Run `bash android/test-gamepad.sh` for axis normalization, dead zones, both D-pad forms, fire timing and state reset tests. Run `bash android/test-touch-joystick.sh` for touch behavior and native port isolation. These host checks do not replace a real Android controller test.
 

@@ -19,6 +19,7 @@ final class TouchJoystickView extends View {
     private int pointer = -1;
     private int port;
     private boolean gamepadMode;
+    private boolean positionHold;
     private String gamepadName = "connect a controller";
     private int gamepadX = 32768, gamepadY = 32768;
     private boolean gamepadFire;
@@ -62,7 +63,20 @@ final class TouchJoystickView extends View {
     void setGamepadMode(boolean enabled) {
         gamepadMode = enabled;
         cancelFire();
-        setContentDescription(enabled ? "Gamepad input. Left stick or D-pad moves; A fires."
+        updateDescription();
+    }
+
+    void setPositionHold(boolean enabled) {
+        positionHold = enabled;
+        updateDescription();
+        invalidate();
+    }
+
+    private void updateDescription() {
+        setContentDescription(gamepadMode ? (positionHold
+                ? "CoCo position-hold. Left stick adjusts position; release to hold. "
+                    + "D-pad fine adjusts; A fires; B centres."
+                : "Direct gamepad input. Left stick or D-pad moves; A fires.")
                 : "Absolute analog joystick. Drag to move. Double tap to fire; "
                 + "hold the second tap for continuous fire. Position stays after release.");
     }
@@ -133,7 +147,9 @@ final class TouchJoystickView extends View {
         if (length < heading.length()) heading = heading.substring(0, Math.max(0, length - 1)) + "…";
         canvas.drawText(heading, getWidth() / 2f, dp(22), paint);
         paint.setTextSize(dp(12));
-        canvas.drawText(gamepadMode ? "Left stick / D-pad moves · A fires · touch disabled"
+        canvas.drawText(gamepadMode ? (positionHold
+                ? "Release holds · D-pad fine · A fire · B centre"
+                : "Left stick / D-pad moves · A fires · touch disabled")
                 : "Double-tap to fire · hold second tap to keep firing",
                 getWidth() / 2f, dp(42), paint);
         float left = dp(16), top = dp(52), right = getWidth() - left;

@@ -21,6 +21,14 @@ The user confirmed that gamepad input works on their Android device. The control
 
 **How to apply:** Keep the two input models independent, retain the joystick port selector, and require real Android/controller verification before claiming hardware compatibility.
 
+## Selectable CoCo gamepad behavior
+
+The user approved a selectable CoCo position-hold mode alongside the existing Direct gamepad mode: stick deflection adjusts position at proportional speed, release holds it, D-pad makes fine adjustments, A fires, and B centres.
+
+**Why:** A spring-centred gamepad cannot physically replicate the original non-centering CoCo stick. The user accepted cursor-like relative positioning rather than a heuristic that ignores centre events.
+
+**How to apply:** Keep Direct available and leave touch behavior unchanged. Safety resets, including controller disconnection, must neutralize even a stored gamepad position. Do not describe relative positioning as exact physical CoCo-stick replication.
+
 ## CoCo display and cassette expectations
 
 The user requested a CoCo bezel based on their picture of the TRS-80 13-inch Color Video Receiver, with live emulation inside the TV opening and the keyboard/joystick controls below.

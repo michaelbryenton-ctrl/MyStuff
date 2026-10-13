@@ -55,6 +55,7 @@ android/local.properties
 android/.idea/
 android/app/build/
 android/app/.cxx/
+/generated-artifacts/
 
 # Generated Autotools files in the imported upstream tree
 vendor/xroar/autom4te.cache/

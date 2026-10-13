@@ -143,6 +143,20 @@ public final class XRoarActivity extends SDLActivity {
         sessionControls.addView(port, new LinearLayout.LayoutParams(
                 0, ViewGroup.LayoutParams.MATCH_PARENT, 1));
         Button source = new Button(this);
+        Button mode = new Button(this);
+        mode.setText("Gamepad: Direct");
+        mode.setAllCaps(false);
+        mode.setTextSize(13);
+        mode.setTextColor(Color.WHITE);
+        mode.setBackgroundTintList(android.content.res.ColorStateList.valueOf(
+                Color.rgb(29, 55, 71)));
+        mode.setVisibility(android.view.View.GONE);
+        mode.setOnClickListener(view -> {
+            gamepad.setPositionHold(!gamepad.isPositionHold());
+            mode.setText(gamepad.isPositionHold() ? "Gamepad: CoCo position-hold"
+                    : "Gamepad: Direct");
+            joystick.setPositionHold(gamepad.isPositionHold());
+        });
         source.setText("Input: Touch");
         source.setAllCaps(false);
         source.setTextColor(Color.WHITE);
@@ -153,6 +167,8 @@ public final class XRoarActivity extends SDLActivity {
             gamepad.setEnabled(!gamepad.isEnabled());
             joystick.setGamepadMode(gamepad.isEnabled());
             source.setText(gamepad.isEnabled() ? "Input: Gamepad" : "Input: Touch");
+            mode.setVisibility(gamepad.isEnabled() ? android.view.View.VISIBLE
+                    : android.view.View.GONE);
         });
         addControl(sessionControls, source);
         Button exit = new Button(this);
@@ -164,6 +180,8 @@ public final class XRoarActivity extends SDLActivity {
         exit.setOnClickListener(view -> AppExit.confirm(this, this::releaseInput));
         addControl(sessionControls, exit);
         layout.addView(sessionControls, new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, dp(44)));
+        layout.addView(mode, new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, dp(44)));
         layout.addView(joystick, new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, 0, 1));
