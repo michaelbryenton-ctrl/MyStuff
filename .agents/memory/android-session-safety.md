@@ -46,3 +46,9 @@ A successful recorder close confirms that output was flushed, not that the user 
 **Why:** The user requested cassette saving and external export to preserve BASIC programs. A recording can be armed and closed without a complete `CSAVE`; even a nonempty CAS container is not proof of a complete program.
 
 **How to apply:** Tell users to wait for BASIC's prompt before Finish and to test-load important saves. Do not automatically discard partial recordings, remove originals after export, or label a mere nonempty file as a verified program save.
+
+The user confirmed that saving is working after installing the quote-input fix.
+
+**Why:** This is user-reported device confirmation beyond the host cassette tests. Their confirmation did not separately establish export or reloading.
+
+**How to apply:** Treat saving as device-confirmed on their setup; keep export and reload verification distinct rather than expanding this confirmation to the entire round-trip.
