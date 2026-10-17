@@ -47,6 +47,8 @@ Use **Choose cartridge, tape, disk, or program** for games. A `.ccc` file, such 
 
 The emulator display is centered within the top half of the window. **Keyboard**, **Enter**, **Space**, and **Library** are in separate rows below it, with space reserved around Android system bars, display cutouts and the phone keyboard. Tap **Keyboard** to show the Android keyboard, or use **Enter** and **Space** directly for game prompts. Phone-keyboard taps are held for 50 milliseconds of emulated time with a 30-millisecond gap so a cartridge's keyboard scan can detect them. Physical keyboards retain normal held-key behaviour.
 
+From 1.0.9, the **"** button next to **Space** enters a straight double quotation mark, useful for `CSAVE "MYPROG"` and `PRINT "HELLO"`. Android's synthetic ASCII punctuation is translated to each emulated machine's actual character mapping rather than treated as matching physical key positions. Physical keyboard mapping remains unchanged. If your phone keyboard offers curly “smart quotes”, use the dedicated **"** button for BASIC's straight quotes.
+
 Touch or drag on the emulator display or the lower joystick pad for absolute analog position. The position stays when you lift your finger, like a non-centering CoCo joystick. Double-tap to press its single fire button; hold the second tap for continuous fire. Quick taps have a minimum 120-millisecond fire pulse. **Joystick: Right** switches between right and left ports; the inactive port remains neutral. Touch joystick input is mapped by default, rather than a physical game controller.
 
 ## Source and licenses

@@ -162,3 +162,17 @@ mtime_ms = 1792271630423
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:561507c3-2e95-4312-aa5e-72f7a9582e6e/1507b639-c16f-4573-9b1b-c0a748b06589/c029d767-495b-4009-90cc-89366ed6f691"
 storage_version_token = "1792271676788252"
 content_type = "application/pdf"
+
+[[outputs]]
+id = "gVhYdYfR1mBmbdLWzWinh"
+uri = "file://generated-artifacts/android/xroar-1.0.9-debug.apk"
+type = "unspecified"
+title = "XRoar Android 1.0.9 — Quote-key fix"
+description = "Update-compatible APK correcting phone ASCII punctuation and adding a dedicated double-quote button next to Space. Four Android architectures; same signing certificate as 1.0.8."
+logical_id = "6408fc13-0ff9-4529-a695-dbcb8d72da12"
+content_hash = "sha256:ea08afadb9658e4deb4ab5b7d29274ef266b9c26540e47f8aea6ef23dc0a369e"
+size = 5812597
+mtime_ms = 1792272328118
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:561507c3-2e95-4312-aa5e-72f7a9582e6e/6408fc13-0ff9-4529-a695-dbcb8d72da12/8945e9e7-c6be-4cfc-8392-030b9da684e9"
+storage_version_token = "1792272333111048"
+content_type = "application/octet-stream"

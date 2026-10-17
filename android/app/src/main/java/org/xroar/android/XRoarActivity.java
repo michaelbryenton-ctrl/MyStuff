@@ -115,6 +115,7 @@ public final class XRoarActivity extends SDLActivity {
         addControl(controls, keyboard);
         addKeyButton(controls, "Enter", 40);
         addKeyButton(controls, "Space", 44);
+        addKeyButton(controls, "\"", 52);
 
         Button library = new Button(this);
         library.setText("Library");

@@ -17,6 +17,7 @@
 #include <SDL3/SDL.h>
 
 #include "hkbd.h"
+#include "keyboard.h"
 #include "events.h"
 #include "xroar.h"
 
@@ -26,7 +27,26 @@
 
 #ifdef __ANDROID__
 static void emit_ime_key(void *context, uint8_t scancode, bool down) {
-(void)context;
+struct ui_sdl3_interface *uisdl3 = context;
+if (!xroar.keyboard_interface) return;
+if (down) {
+unsigned unicode = android_ime_symbol(scancode, (hkbd.state & HK_MASK_SHIFT) != 0);
+if (unicode) {
+uisdl3->ime_unicode[scancode] = unicode;
+keyboard_unicode_press(xroar.keyboard_interface, unicode);
+return;
+}
+} else if (uisdl3->ime_unicode[scancode]) {
+keyboard_unicode_release(xroar.keyboard_interface, uisdl3->ime_unicode[scancode]);
+uisdl3->ime_unicode[scancode] = 0;
+// A translated character can temporarily override Shift; restore held-key state.
+if (hkbd.state & HK_MASK_SHIFT) {
+KBD_MATRIX_PRESS(xroar.keyboard_interface, DSCAN_SHIFT);
+} else {
+KBD_MATRIX_RELEASE(xroar.keyboard_interface, DSCAN_SHIFT);
+}
+return;
+}
 if (down) {
 hk_scan_press(scancode);
 } else {
@@ -35,11 +55,11 @@ hk_scan_release(scancode);
 }
 
 void sdl_process_textinput(struct ui_sdl3_interface *uisdl3) {
-android_ime_queue_process(&uisdl3->ime_keys, event_current_tick, emit_ime_key, NULL);
+android_ime_queue_process(&uisdl3->ime_keys, event_current_tick, emit_ime_key, uisdl3);
 }
 
 void sdl_cancel_textinput(struct ui_sdl3_interface *uisdl3) {
-android_ime_queue_cancel(&uisdl3->ime_keys, emit_ime_key, NULL);
+android_ime_queue_cancel(&uisdl3->ime_keys, emit_ime_key, uisdl3);
 }
 
 static bool queue_ime_key(struct ui_sdl3_interface *uisdl3, SDL_KeyboardEvent *ev, bool down) {
@@ -58,13 +78,24 @@ return true;
 }
 
 void sdl_tap_key(struct ui_sdl3_interface *uisdl3, SDL_Scancode scancode) {
-if (uisdl3->ime_keys.count > ANDROID_IME_QUEUE_CAPACITY - 2) {
+// The Quote button requests the US shifted apostrophe, translated to the
+// emulated machine's actual quotation-mark chord by emit_ime_key().
+bool quote = scancode == SDL_SCANCODE_APOSTROPHE;
+if (uisdl3->ime_keys.count > ANDROID_IME_QUEUE_CAPACITY - (quote ? 4 : 2)) {
 sdl_cancel_textinput(uisdl3);
 }
 SDL_KeyboardEvent event = {0};
+if (quote) {
+event.scancode = SDL_SCANCODE_LSHIFT;
+queue_ime_key(uisdl3, &event, true);
+}
 event.scancode = scancode;
 queue_ime_key(uisdl3, &event, true);
 queue_ime_key(uisdl3, &event, false);
+if (quote) {
+event.scancode = SDL_SCANCODE_LSHIFT;
+queue_ime_key(uisdl3, &event, false);
+}
 }
 #endif
 
@@ -83,15 +114,15 @@ void sdl_keypress(struct ui_sdl3_interface *uisdl3, SDL_KeyboardEvent *ev) {
 	}
 #endif
 
-	if (hkbd.layout == hk_layout_iso) {
+#ifdef __ANDROID__
+if (queue_ime_key(uisdl3, ev, true)) return;
+#endif
+if (hkbd.layout == hk_layout_iso) {
 		if (ev->scancode == SDL_SCANCODE_BACKSLASH) {
 			ev->scancode = SDL_SCANCODE_NONUSHASH;
 		}
 	}
 
-#ifdef __ANDROID__
-if (queue_ime_key(uisdl3, ev, true)) return;
-#endif
 	if (ev->scancode < 256) {
 		hk_scan_press(ev->scancode);
 	}
@@ -119,15 +150,15 @@ void sdl_keyrelease(struct ui_sdl3_interface *uisdl3, SDL_KeyboardEvent *ev) {
 	}
 #endif
 
-	if (hkbd.layout == hk_layout_iso) {
+#ifdef __ANDROID__
+if (queue_ime_key(uisdl3, ev, false)) return;
+#endif
+if (hkbd.layout == hk_layout_iso) {
 		if (ev->scancode == SDL_SCANCODE_BACKSLASH) {
 			ev->scancode = SDL_SCANCODE_NONUSHASH;
 		}
 	}
 
-#ifdef __ANDROID__
-if (queue_ime_key(uisdl3, ev, false)) return;
-#endif
 	if (ev->scancode < 256) {
 		hk_scan_release(ev->scancode);
 	}

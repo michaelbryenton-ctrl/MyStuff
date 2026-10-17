@@ -24,6 +24,7 @@
 
 #ifdef __ANDROID__
 #include "android_ime_queue.h"
+#include "android_ime_symbols.h"
 #include "android_keyboard_bridge.h"
 #include "android_tape_bridge.h"
 #endif
@@ -48,6 +49,7 @@ struct ui_sdl3_interface {
 	bool mouse_hidden;
 #ifdef __ANDROID__
 struct android_ime_queue ime_keys;
+uint16_t ime_unicode[256];
 #endif
 };
 

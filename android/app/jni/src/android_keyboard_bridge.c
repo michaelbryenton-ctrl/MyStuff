@@ -23,6 +23,7 @@ JNIEXPORT jboolean JNICALL Java_org_xroar_android_XRoarActivity_nativeTapKey(
     case SDL_SCANCODE_RETURN:
     case SDL_SCANCODE_SPACE:
     case SDL_SCANCODE_BACKSPACE:
+    case SDL_SCANCODE_APOSTROPHE:
         break;
     default: return JNI_FALSE;
     }

@@ -66,6 +66,7 @@ void ui_sdl_init(struct ui_sdl3_interface *uisdl3, struct ui_cfg *ui_cfg) {
 #ifdef __ANDROID__
 // Android port: let the emulated keyboard scan each virtual key before release.
 android_ime_queue_init(&uisdl3->ime_keys, EVENT_MS(50), EVENT_MS(30));
+memset(uisdl3->ime_unicode, 0, sizeof(uisdl3->ime_unicode));
 android_keyboard_bridge_init();
 android_tape_bridge_init();
 #endif
