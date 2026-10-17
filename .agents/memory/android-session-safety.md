@@ -47,8 +47,8 @@ A successful recorder close confirms that output was flushed, not that the user 
 
 **How to apply:** Tell users to wait for BASIC's prompt before Finish and to test-load important saves. Do not automatically discard partial recordings, remove originals after export, or label a mere nonempty file as a verified program save.
 
-The user confirmed that saving is working after installing the quote-input fix.
+The user confirmed that saving, export, and reloading work after installing the quote-input fix.
 
-**Why:** This is user-reported device confirmation beyond the host cassette tests. Their confirmation did not separately establish export or reloading.
+**Why:** This is user-reported device confirmation of the cassette save/export/reload round-trip beyond the host tests.
 
-**How to apply:** Treat saving as device-confirmed on their setup; keep export and reload verification distinct rather than expanding this confirmation to the entire round-trip.
+**How to apply:** Treat the cassette save/export/reload round-trip as device-confirmed on their setup, without assuming universal device compatibility or extending this confirmation to disk saving or snapshots.
