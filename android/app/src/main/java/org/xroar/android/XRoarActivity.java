@@ -25,9 +25,12 @@ import java.io.File;
 public final class XRoarActivity extends SDLActivity {
     private static native boolean nativeTapKey(int scancode);
     private static native void nativeTouchJoystick(int x, int y, boolean fire, int port);
+    private static native boolean nativeTapeCommand(String path);
+    private static native int nativeTapeStatus();
     private TouchJoystickView joystick;
     private GamepadInput gamepad;
     private boolean resumed;
+    private CassetteFiles cassetteFiles;
 
     private void tapKey(int scancode) {
         if (!nativeTapKey(scancode)) {
@@ -71,6 +74,14 @@ public final class XRoarActivity extends SDLActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (mBrokenLibraries || mSurface == null) return;
+        cassetteFiles = new CassetteFiles(this, new CassetteFiles.TapeAccess() {
+            @Override public boolean request(String path) {
+                return !mSDLMainFinished && nativeTapeCommand(path);
+            }
+            @Override public int status() {
+                return mSDLMainFinished ? -1 : nativeTapeStatus();
+            }
+        }, null, savedInstanceState);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
 
         EmulatorLayout layout = new EmulatorLayout(this);
@@ -111,7 +122,7 @@ public final class XRoarActivity extends SDLActivity {
         library.setTextColor(Color.WHITE);
         library.setBackgroundTintList(android.content.res.ColorStateList.valueOf(
                 Color.rgb(29, 55, 71)));
-        library.setOnClickListener(view -> returnToLibrary());
+        library.setOnClickListener(view -> cassetteFiles.prepareToLeave(this::returnToLibrary));
         addControl(controls, library);
         layout.addView(controls, new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, dp(52)));
@@ -177,7 +188,19 @@ public final class XRoarActivity extends SDLActivity {
         exit.setTextColor(Color.WHITE);
         exit.setBackgroundTintList(android.content.res.ColorStateList.valueOf(
                 Color.rgb(29, 55, 71)));
-        exit.setOnClickListener(view -> AppExit.confirm(this, this::releaseInput));
+        Button files = new Button(this);
+        files.setText("Files");
+        files.setAllCaps(false);
+        files.setTextColor(Color.WHITE);
+        files.setBackgroundTintList(android.content.res.ColorStateList.valueOf(
+                Color.rgb(29, 55, 71)));
+        files.setOnClickListener(view -> cassetteFiles.show());
+        addControl(sessionControls, files);
+        exit.setOnClickListener(view -> AppExit.confirmWhenReady(this, finishExit ->
+                cassetteFiles.prepareToLeave(() -> {
+                    releaseInput();
+                    finishExit.run();
+                })));
         addControl(sessionControls, exit);
         layout.addView(sessionControls, new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, dp(44)));
@@ -219,8 +242,24 @@ public final class XRoarActivity extends SDLActivity {
     }
 
     @Override protected void onDestroy() {
+        if (cassetteFiles != null) cassetteFiles.close();
         if (gamepad != null) gamepad.close();
         super.onDestroy();
+    }
+
+    @Override protected void onSaveInstanceState(Bundle state) {
+        if (cassetteFiles != null) cassetteFiles.saveState(state);
+        super.onSaveInstanceState(state);
+    }
+
+    @Override protected void onActivityResult(int request, int result, Intent data) {
+        if (cassetteFiles != null && cassetteFiles.onActivityResult(request, result, data)) return;
+        super.onActivityResult(request, result, data);
+    }
+
+    @Override public void onBackPressed() {
+        if (cassetteFiles != null) cassetteFiles.prepareToLeave(() -> super.onBackPressed());
+        else super.onBackPressed();
     }
 
     private void releaseInput() {

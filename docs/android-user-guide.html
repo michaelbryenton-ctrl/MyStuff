@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>XRoar Android 1.0.7 — User Guide</title>
+<title>XRoar Android 1.0.8 — User Guide</title>
 <style>
   :root { color-scheme: light; }
   * { box-sizing: border-box; }
@@ -46,11 +46,11 @@
 <body>
 <main>
 <section class="page">
-  <div class="eyebrow">Native Android • Version 1.0.7</div>
+  <div class="eyebrow">Native Android • Version 1.0.8</div>
   <h1>XRoar user guide</h1>
-  <p class="lead">Setup, everyday controls, and the new CoCo position-hold gamepad method.</p>
+  <p class="lead">Setup, controls, CoCo position-hold input, and saving BASIC programs to cassette.</p>
   <p>XRoar emulates Dragon, Tandy Color Computer (CoCo), and Tandy MC-10 computers. This Android edition uses native emulation and does not include machine ROMs or game media.</p>
-  <div class="note warning"><strong>Updating an existing installation:</strong> Install <code>xroar-1.0.7-debug.apk</code> over the existing app. Do not uninstall first: uninstalling or clearing app storage deletes imported ROMs and media. Keep your original files outside the app as backups.</div>
+  <div class="note warning"><strong>Updating an existing installation:</strong> Install <code>xroar-1.0.8-debug.apk</code> over the existing app. Do not uninstall first: uninstalling or clearing app storage deletes imported ROMs, media, and local saved cassettes. Keep exported backups outside the app.</div>
 
   <h3>1. Install and select a computer</h3>
   <ol>
@@ -66,10 +66,10 @@
 
   <h3>3. Choose software and start</h3>
   <p>Tap <strong>Choose cartridge, tape, disk, or program</strong>, select your software, and then tap <strong>Start XRoar</strong>. Imported files are copied to the app's private storage. A selected <code>.ccc</code> cartridge is launched with autorun enabled.</p>
-  <div class="footer">1 / 5 • Setup and installation</div>
+  <div class="footer">1 / 6 • Setup and installation</div>
 </section>
 
-<section class="page">
+<section class="page reference">
   <div class="eyebrow">Everyday use</div>
   <h2>Display, keyboard, and media</h2>
   <p>The emulator picture sits in the top half of the window. Controls occupy separate rows below it, not over the picture. CoCo machines have a receiver-style bezel around the live display; Dragon and MC-10 use a plain frame.</p>
@@ -82,6 +82,7 @@
       <tr><td><strong>Library</strong></td><td>Ends the current emulator session and returns to the existing library. Starting again begins a fresh session, not a resume of the previous emulated state.</td></tr>
       <tr><td><strong>Exit app</strong></td><td>Asks for confirmation, then closes the app's task. Cancel leaves it open. Imported files and library preferences remain stored.</td></tr>
       <tr><td><strong>Port: Right / Left</strong></td><td>Selects the emulated joystick socket. The other socket stays neutral. Choose the socket expected by the game.</td></tr>
+      <tr><td><strong>Files</strong></td><td>Starts or finishes a cassette recording and opens saved cassettes for export. See page 6.</td></tr>
     </tbody>
   </table>
   <p>Hide the phone keyboard with Android's keyboard-dismiss control or Back when you no longer need it. Phone-keyboard taps use a short emulated hold and gap so software can detect them; physical keyboards retain normal held-key behavior.</p>
@@ -97,7 +98,7 @@
 
   <h3>Storage and session limits</h3>
   <p>Imports preserve the source files' names and leave the originals outside the app untouched. Returning to the library or exiting preserves imported files, but does not promise to save current emulated RAM, progress, or changes made by a running program. Keep separate backups of valuable files.</p>
-  <div class="footer">2 / 5 • General usage</div>
+  <div class="footer">2 / 6 • General usage</div>
 </section>
 
 <section class="page">
@@ -131,7 +132,7 @@
     <li><strong>B:</strong> has no recenter action in Direct mode.</li>
   </ul>
   <div class="note">Controller recognition and button layouts depend on Android and the controller. This version has no raw-USB driver or custom button-remapping screen.</div>
-  <div class="footer">3 / 5 • Existing input methods</div>
+  <div class="footer">3 / 6 • Existing input methods</div>
 </section>
 
 <section class="page">
@@ -162,7 +163,7 @@
   <h3>What “hold” means</h3>
   <p>This is cursor-like relative positioning, not an exact absolute replica of a physical CoCo stick. The game interprets the held analog value: it may continue moving an object, maintain an aiming position, or behave differently. Releasing the controller does not necessarily stop motion inside the game.</p>
   <div class="note warning"><strong>Safety resets override holding.</strong> Disconnection, app pause, focus loss, changing the input source or port, and changing gamepad mode centre the gamepad and release fire. The mode remains selected within the session, but stored position is not preserved through those resets. A new emulator session starts with Touch input and Direct gamepad mode.</div>
-  <div class="footer">4 / 5 • Position-hold operation</div>
+  <div class="footer">4 / 6 • Position-hold operation</div>
 </section>
 
 <section class="page reference">
@@ -193,9 +194,39 @@
   </table>
 
   <h3>Build and verification status</h3>
-  <p>Version 1.0.7 (version code 8) compiled for arm64-v8a, armeabi-v7a, x86, and x86_64. Its signing certificate matches the pinned update identity. Host regression checks passed, including 54 gamepad checks and touch/native-port, keyboard, launch, archive, and bezel checks.</p>
+  <p>Version 1.0.8 (version code 9) compiled for arm64-v8a, armeabi-v7a, x86, and x86_64. Its signer and version checks pass against 1.0.7. Host checks passed, including 54 gamepad checks, cassette storage/export and real CAS encode/decode tests, plus touch/native-port, keyboard, launch, archive, and bezel checks.</p>
   <p><strong>Hardware limitation:</strong> Direct gamepad operation was confirmed on the user's device. The new position-hold mode has not yet been verified on a physical Android controller in this workspace. Host tests do not establish universal controller compatibility or device installation success.</p>
-  <div class="footer">5 / 5 • XRoar Android 1.0.7 user guide • No ROMs or games are bundled</div>
+  <div class="footer">5 / 6 • XRoar Android 1.0.8 user guide • No ROMs or games are bundled</div>
+</section>
+
+<section class="page reference">
+  <div class="eyebrow">New in 1.0.8 • Save and export</div>
+  <h2>Save a BASIC program to cassette</h2>
+  <p>This records the emulated computer's cassette output into a <code>.cas</code> file. It does not record the phone microphone or create a RAM snapshot.</p>
+  <ol>
+    <li><strong>Boot BASIC:</strong> In the library, tap <strong>Clear selected media / Start in BASIC</strong>, then <strong>Start XRoar</strong>. This clears the media selection without deleting its file.</li>
+    <li><strong>Enter a program:</strong> For example, type <code>10 PRINT "HELLO"</code>, then Enter. Use <code>RUN</code> to check it if desired.</li>
+    <li><strong>Prepare a cassette:</strong> Tap <strong>Files → Record new cassette</strong>. Enter a file label such as <code>My program</code>, then tap <strong>Start recording</strong>. Wait for “Recording ready”.</li>
+    <li><strong>Save from BASIC:</strong> Type <code>CSAVE "MYPROG"</code>, then Enter. Use a short cassette name supported by your BASIC. This internal name is separate from the Android file label.</li>
+    <li><strong>Wait for completion:</strong> Do not finish while the save is running. Wait for BASIC's prompt to return, then tap <strong>Files → Finish recording</strong> and confirm.</li>
+    <li><strong>Export:</strong> Open <strong>Files → Saved cassettes / Export</strong>, select the file, then tap <strong>Export copy</strong>. Choose a destination in Android's file picker. The private original remains in the app.</li>
+  </ol>
+  <p>Each new recording receives a unique filename, so a repeated label does not overwrite an earlier save. A short BASIC cassette name need not match the longer exported filename.</p>
+
+  <h3>Reload and verify</h3>
+  <p>Tap <strong>Library</strong>, then <strong>Saved cassettes / Export</strong>. Select your cassette, tap <strong>Select to load</strong>, and then <strong>Start XRoar</strong>. The usual tape autorun handles a supported BASIC tape with <code>CLOAD</code> and <code>RUN</code>. To load an exported copy, select its <code>.cas</code> file through the normal media picker.</p>
+  <p>Test-load your saved program before relying on it. A nonempty cassette file does not prove the program finished saving. Keep an exported backup outside app storage.</p>
+
+  <h3>Safety and error handling</h3>
+  <ul>
+    <li><strong>Finish before leaving:</strong> Library, Exit, and Back navigation prompt you to finish an active recording. Cancel keeps the current session. Wait for exports or cassette operations to finish before leaving.</li>
+    <li><strong>Finish flushes first:</strong> The cassette closes on the emulator thread before a successful completion message. An active recording cannot be exported.</li>
+    <li><strong>Cancelled export:</strong> The private cassette is unchanged. If export fails, the local original is kept, but the destination may contain a partial copy.</li>
+    <li><strong>Interrupted recording:</strong> Files are retained rather than silently deleted. Forced app termination or stopping before BASIC completes can leave an incomplete cassette.</li>
+    <li><strong>Storage:</strong> Uninstalling or clearing app data deletes local saved cassettes. Exported copies outside the app are separate backups.</li>
+  </ul>
+  <div class="note"><strong>Current scope:</strong> Cassette saving and export are implemented. Save-state snapshots and disk-image export are not. Host tests cover storage safety, real CAS waveform round-trip and failed-write reporting; the Android recording/file-picker journey still needs a real-device check.</div>
+  <div class="footer">6 / 6 • Saving, exporting, and reloading cassettes</div>
 </section>
 </main>
 </body>

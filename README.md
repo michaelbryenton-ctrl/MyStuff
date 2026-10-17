@@ -67,6 +67,21 @@ Run `bash android/test-media-and-bezel.sh [CASSETTE_ZIP]` for archive safety and
 
 **Library** stops the current emulation session and returns to the existing ROM library. The emulator runs in a private Android process but shares the library's navigation task. This protects the library from upstream XRoar's process-wide `exit()` on quit and starts each emulation session with fresh native state.
 
+## Saving BASIC programs to cassette (1.0.8)
+
+1. To boot into BASIC without starting the previously selected game, use **Clear selected media / Start in BASIC** in the library, then **Start XRoar**.
+2. Enter your BASIC program. In the emulator, tap **Files → Record new cassette**, enter a file label, and tap **Start recording**.
+3. Wait for “Recording ready”, then type `CSAVE "MYPROG"` and press Enter. The quoted BASIC cassette name is separate from the Android file label. Use a short name supported by your emulated BASIC.
+4. Wait until the save command completes and BASIC's prompt returns. Tap **Files → Finish recording** and confirm. Finishing too early produces an incomplete cassette.
+5. Use **Files → Saved cassettes / Export**, select the file, and tap **Export copy**. Android's document picker lets you choose an external destination. Cancelling or failing an export does not delete the local original.
+6. To reload, return to **Library → Saved cassettes / Export**, select a cassette, tap **Select to load**, then **Start XRoar**. You can also import an exported `.cas` through the usual media picker.
+
+This records XRoar's emulated cassette output, not microphone audio. Each recording gets a unique filename in private app storage; existing recordings and imported media are not overwritten. Normal Library/Exit/Back navigation requires finishing an active recording first. The tape is closed/flushed on the emulator thread before a successful Finish acknowledgement; an active recording cannot be exported. Incomplete files are retained for possible recovery, but their presence or nonzero size does not prove that `CSAVE` completed. Test-load a saved program before relying on it.
+
+Exported copies survive outside the app; local copies are deleted by uninstalling or clearing app storage. Keep backups. Cassette saving does not implement RAM/save-state snapshots, disk-image export, or automatic preservation of a running game. The new Android recording/document-picker journey has not yet been exercised on physical hardware.
+
+Run `bash android/test-cassette-saving.sh` for cassette storage/export safety, emulator-thread command handling, real CAS waveform encode/decode round-trip, and failed-write reporting checks.
+
 - XRoar source: [https://www.6809.org.uk/git/xroar.git](https://www.6809.org.uk/git/xroar.git), upstream commit `53acd7e380aacefaf4ac385282f80532f62827cb` (current upstream at the time this Android port was started). The Android build includes the Dragon, CoCo 3, and MC-10 machine families and SDL3 backend.
 - SDL3 Android package: official SDL 3.4.18 Android archive, included as `android/app/libs/SDL3-3.4.18.aar`. SDL's license is in `android/app/libs/SDL3-LICENSE.txt`.
 - XRoar is distributed under GPL version 3 or later; see `vendor/xroar/COPYING.GPL`.

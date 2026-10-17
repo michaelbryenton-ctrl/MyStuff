@@ -25,6 +25,7 @@
 #ifdef __ANDROID__
 #include "android_ime_queue.h"
 #include "android_keyboard_bridge.h"
+#include "android_tape_bridge.h"
 #endif
 struct joystick_module;
 struct keyboard_sdl3_state;

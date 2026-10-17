@@ -470,7 +470,15 @@ struct tape *tape_asc_open(const char *filename, const char *mode) {
 static void cas_close(struct tape *t) {
 	struct tape_cas *cas = t->data;
 	cas_motor_off(t);
-	fclose(cas->fd);
+#ifdef __ANDROID__
+/* Android's asynchronous Finish action must not report a failed flush as saved. */
+extern void android_tape_note_write_error(void);
+bool failed = ferror(cas->fd) != 0;
+if (fclose(cas->fd) != 0) failed = 1;
+if (cas->writing && failed) android_tape_note_write_error();
+#else
+fclose(cas->fd);
+#endif
 	cue_list_free(cas);
 	free(cas->cue.builder);
 	free(cas);

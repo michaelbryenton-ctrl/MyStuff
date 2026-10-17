@@ -175,6 +175,8 @@ break;
 SDL_Scancode scancode;
 if (android_keyboard_tap_event(&event, &scancode)) {
 sdl_tap_key(uisdl3, scancode);
+} else {
+android_tape_handle_event(&event);
 }
 }
 #endif

@@ -134,3 +134,31 @@ mtime_ms = 1791927941112
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:561507c3-2e95-4312-aa5e-72f7a9582e6e/6957c84c-3fa9-4d21-943b-14e3cf79ff25/5c5b671f-43c0-48fb-b293-34487856ded0"
 storage_version_token = "1791927949909968"
 content_type = "application/pdf"
+
+[[outputs]]
+id = "O0ZKEsv6bPKojqz5pNvXq"
+uri = "file://generated-artifacts/android/xroar-1.0.8-debug.apk"
+type = "unspecified"
+title = "XRoar Android 1.0.8 — Cassette saving"
+description = "Update-compatible APK with in-emulator cassette recording, safe Finish controls, saved-cassette selection and Android document export. Four Android architectures; no bundled ROMs."
+logical_id = "e1a890f4-9b1a-45da-b758-5f7980ae8fa5"
+content_hash = "sha256:ed05b0636d3b6aa4cb4d31d157a470b93f72b838e63a1014733f83d081d95c17"
+size = 5810163
+mtime_ms = 1792271588147
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:561507c3-2e95-4312-aa5e-72f7a9582e6e/e1a890f4-9b1a-45da-b758-5f7980ae8fa5/6b9b6a9b-3441-4465-8b48-313294528c05"
+storage_version_token = "1792271676337332"
+content_type = "application/octet-stream"
+
+[[outputs]]
+id = "8G_MEwiHD9sn4p5weztvo"
+uri = "file://generated-artifacts/android/xroar-1.0.8-user-guide.pdf"
+type = "pdf"
+title = "XRoar Android 1.0.8 — Updated user guide"
+description = "Six-page guide including cassette CSAVE, finishing, exporting, reloading, and the existing touch and Direct/CoCo position-hold controls."
+logical_id = "1507b639-c16f-4573-9b1b-c0a748b06589"
+content_hash = "sha256:ffa979ff5080a8be720f46b0f8b74cf4a4eaa1139ab4fa70b8c6043363dd408d"
+size = 132171
+mtime_ms = 1792271630423
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:561507c3-2e95-4312-aa5e-72f7a9582e6e/1507b639-c16f-4573-9b1b-c0a748b06589/c029d767-495b-4009-90cc-89366ed6f691"
+storage_version_token = "1792271676788252"
+content_type = "application/pdf"

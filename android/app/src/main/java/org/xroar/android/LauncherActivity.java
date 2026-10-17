@@ -46,11 +46,18 @@ public final class LauncherActivity extends Activity {
     private Spinner machinePicker;
     private String selectedMediaPath;
     private boolean importing;
+    private CassetteFiles cassetteFiles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (AppExit.handleRequest(this, getIntent())) return;
+        cassetteFiles = new CassetteFiles(this, null, file -> {
+            selectedMediaPath = file.getAbsolutePath();
+            getPreferences(MODE_PRIVATE).edit().putString(LAST_MEDIA, selectedMediaPath).apply();
+            refreshSummaries();
+            status.setText("Saved cassette selected. Start XRoar to load it.");
+        }, savedInstanceState);
         selectedMediaPath = getPreferences(MODE_PRIVATE).getString(LAST_MEDIA, null);
         if (selectedMediaPath != null && !new File(selectedMediaPath).isFile()) {
             selectedMediaPath = null;
@@ -67,8 +74,19 @@ public final class LauncherActivity extends Activity {
 
     @Override
     protected void onDestroy() {
+        if (cassetteFiles != null) cassetteFiles.close();
         importer.shutdown();
         super.onDestroy();
+    }
+
+    @Override protected void onSaveInstanceState(Bundle state) {
+        if (cassetteFiles != null) cassetteFiles.saveState(state);
+        super.onSaveInstanceState(state);
+    }
+
+    @Override public void onBackPressed() {
+        if (cassetteFiles != null) cassetteFiles.prepareToLeave(() -> super.onBackPressed());
+        else super.onBackPressed();
     }
 
     private void buildScreen() {
@@ -131,6 +149,14 @@ public final class LauncherActivity extends Activity {
         Button chooseMedia = button("Choose cartridge, tape, disk, or program");
         mediaPanel.addView(chooseMedia);
         chooseMedia.setOnClickListener(view -> pickFiles(PICK_MEDIA, false));
+        Button clearMedia = button("Clear selected media / Start in BASIC");
+        mediaPanel.addView(clearMedia);
+        clearMedia.setOnClickListener(view -> {
+            if (importing) { Toast.makeText(this, "Wait for the import to finish.", Toast.LENGTH_SHORT).show(); return; }
+            selectedMediaPath = null;
+            getPreferences(MODE_PRIVATE).edit().remove(LAST_MEDIA).apply();
+            refreshSummaries();
+        });
 
         TextView help = text(
                 "ROM images are not included. Import firmware you are entitled to use. "
@@ -141,8 +167,12 @@ public final class LauncherActivity extends Activity {
         startButton = button("Start XRoar");
         content.addView(startButton, margins(startButton, 0, 0, 0, 12));
         startButton.setOnClickListener(view -> startEmulator());
+        Button savedTapes = button("Saved cassettes / Export");
+        content.addView(savedTapes, margins(savedTapes, 0, 0, 0, 12));
+        savedTapes.setOnClickListener(view -> cassetteFiles.show());
         exitButton = button("Exit app");
-        exitButton.setOnClickListener(view -> AppExit.confirm(this, () -> {}));
+        exitButton.setOnClickListener(view -> AppExit.confirmWhenReady(this,
+                finishExit -> cassetteFiles.prepareToLeave(finishExit)));
         content.addView(exitButton, margins(exitButton, 0, 0, 0, 12));
 
         status = text("", 14, Color.rgb(121, 229, 210));
@@ -162,6 +192,7 @@ public final class LauncherActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (cassetteFiles != null && cassetteFiles.onActivityResult(requestCode, resultCode, data)) return;
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK || data == null) {
             return;
@@ -338,6 +369,10 @@ public final class LauncherActivity extends Activity {
     }
 
     private void startEmulator() {
+        if (cassetteFiles != null && cassetteFiles.busy()) {
+            status.setText("Wait for the cassette export to finish before starting XRoar.");
+            return;
+        }
         if (selectedMediaPath != null && MediaArchive.isZip(new File(selectedMediaPath))) {
             status.setText("Choose this ZIP again to extract and select the tape inside it.");
             return;
