@@ -176,3 +176,17 @@ mtime_ms = 1792272328118
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:561507c3-2e95-4312-aa5e-72f7a9582e6e/6408fc13-0ff9-4529-a695-dbcb8d72da12/8945e9e7-c6be-4cfc-8392-030b9da684e9"
 storage_version_token = "1792272333111048"
 content_type = "application/octet-stream"
+
+[[outputs]]
+id = "fGSqVbxo17A_ZsAhtPHsH"
+uri = "file://generated-artifacts/android/xroar-1.0.9-user-guide.pdf"
+type = "pdf"
+title = "XRoar Android 1.0.9 — User Guide"
+description = "Updated six-page guide covering the straight-quote button, phone punctuation fix, and confirmed cassette saving, export, and reloading."
+logical_id = "1cd71ede-2e06-4e95-a6fc-23f6235598c9"
+content_hash = "sha256:0c896bc0ffc14b96a9cec009a11a674d257fe40f03b0aefd067aa635a20ff428"
+size = 135362
+mtime_ms = 1792526801765
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:561507c3-2e95-4312-aa5e-72f7a9582e6e/1cd71ede-2e06-4e95-a6fc-23f6235598c9/e18ace40-4f8c-4b2c-985c-c0f985ec2ec6"
+storage_version_token = "1792526818120414"
+content_type = "application/pdf"

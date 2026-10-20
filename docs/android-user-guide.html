@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>XRoar Android 1.0.8 — User Guide</title>
+<title>XRoar Android 1.0.9 — User Guide</title>
 <style>
   :root { color-scheme: light; }
   * { box-sizing: border-box; }
@@ -46,11 +46,11 @@
 <body>
 <main>
 <section class="page">
-  <div class="eyebrow">Native Android • Version 1.0.8</div>
+  <div class="eyebrow">Native Android • Version 1.0.9</div>
   <h1>XRoar user guide</h1>
   <p class="lead">Setup, controls, CoCo position-hold input, and saving BASIC programs to cassette.</p>
   <p>XRoar emulates Dragon, Tandy Color Computer (CoCo), and Tandy MC-10 computers. This Android edition uses native emulation and does not include machine ROMs or game media.</p>
-  <div class="note warning"><strong>Updating an existing installation:</strong> Install <code>xroar-1.0.8-debug.apk</code> over the existing app. Do not uninstall first: uninstalling or clearing app storage deletes imported ROMs, media, and local saved cassettes. Keep exported backups outside the app.</div>
+  <div class="note warning"><strong>Updating an existing installation:</strong> Install <code>xroar-1.0.9-debug.apk</code> over the existing app. Do not uninstall first: uninstalling or clearing app storage deletes imported ROMs, media, and local saved cassettes. Keep exported backups outside the app.</div>
 
   <h3>1. Install and select a computer</h3>
   <ol>
@@ -79,13 +79,14 @@
     <tbody>
       <tr><td><strong>Keyboard</strong></td><td>Shows the Android keyboard for typing BASIC commands or answering prompts. An Android-recognized USB or Bluetooth keyboard can also be used.</td></tr>
       <tr><td><strong>Enter / Space</strong></td><td>Sends the corresponding key directly, useful at game title screens and prompts.</td></tr>
+      <tr><td><strong>" (beside Space)</strong></td><td>Enters a straight double quote for BASIC commands such as <code>PRINT "HELLO"</code> and <code>CSAVE "MYPROG"</code>. Use it instead of your phone keyboard's curly “smart quotes”.</td></tr>
       <tr><td><strong>Library</strong></td><td>Ends the current emulator session and returns to the existing library. Starting again begins a fresh session, not a resume of the previous emulated state.</td></tr>
       <tr><td><strong>Exit app</strong></td><td>Asks for confirmation, then closes the app's task. Cancel leaves it open. Imported files and library preferences remain stored.</td></tr>
       <tr><td><strong>Port: Right / Left</strong></td><td>Selects the emulated joystick socket. The other socket stays neutral. Choose the socket expected by the game.</td></tr>
       <tr><td><strong>Files</strong></td><td>Starts or finishes a cassette recording and opens saved cassettes for export. See page 6.</td></tr>
     </tbody>
   </table>
-  <p>Hide the phone keyboard with Android's keyboard-dismiss control or Back when you no longer need it. Phone-keyboard taps use a short emulated hold and gap so software can detect them; physical keyboards retain normal held-key behavior.</p>
+  <p>Hide the phone keyboard with Android's keyboard-dismiss control or Back when you no longer need it. Phone-keyboard taps use a short emulated hold and gap so software can detect them. In 1.0.9, phone ASCII punctuation follows the emulated machine's character mapping; physical keyboard mapping and held-key behavior are unchanged.</p>
 
   <h3>Cassettes and ZIP archives</h3>
   <ul>
@@ -121,7 +122,7 @@
     <li>Check the controller name and live position/fire indication in the lower pad. “Connect a controller” means no supported controller is currently selected.</li>
     <li>Choose <strong>Port: Right</strong> or <strong>Port: Left</strong> as required by the game.</li>
   </ol>
-  <p>The app uses the first available controller. Touch movement is disabled while Gamepad input is selected. Keyboard, Enter, and Space remain available. Switching back to Touch restores its independently stored touch position.</p>
+  <p>The app uses the first available controller. Touch movement is disabled while Gamepad input is selected. Keyboard, Enter, Space, and the quote button remain available. Switching back to Touch restores its independently stored touch position.</p>
 
   <h3>Direct mode: unchanged original mapping</h3>
   <p>The first gamepad mode is <strong>Gamepad: Direct</strong>. Left-stick displacement maps directly to the full emulated analog range. If your physical stick springs back to its centre, the emulated position centres too.</p>
@@ -194,9 +195,9 @@
   </table>
 
   <h3>Build and verification status</h3>
-  <p>Version 1.0.8 (version code 9) compiled for arm64-v8a, armeabi-v7a, x86, and x86_64. Its signer and version checks pass against 1.0.7. Host checks passed, including 54 gamepad checks, cassette storage/export and real CAS encode/decode tests, plus touch/native-port, keyboard, launch, archive, and bezel checks.</p>
-  <p><strong>Hardware limitation:</strong> Direct gamepad operation was confirmed on the user's device. The new position-hold mode has not yet been verified on a physical Android controller in this workspace. Host tests do not establish universal controller compatibility or device installation success.</p>
-  <div class="footer">5 / 6 • XRoar Android 1.0.8 user guide • No ROMs or games are bundled</div>
+  <p>Version 1.0.9 (version code 10) compiled for arm64-v8a, armeabi-v7a, x86, and x86_64. Signer and version checks passed against 1.0.8. Host checks covered quote mapping across six machine layouts, repeated quotes, Shift release, focus cancellation, physical-key isolation, and duplicate ASCII suppression. Cassette storage/export, real CAS encode/decode, and existing input/launch regression checks also passed.</p>
+  <p><strong>Device confirmation and limits:</strong> Saving, exporting, and reloading cassettes were confirmed on the user's Android device after the quote-input fix. Direct gamepad operation was also confirmed. Position-hold mode still needs physical-controller verification; these results do not establish universal device compatibility.</p>
+  <div class="footer">5 / 6 • XRoar Android 1.0.9 user guide • No ROMs or games are bundled</div>
 </section>
 
 <section class="page reference">
@@ -205,7 +206,7 @@
   <p>This records the emulated computer's cassette output into a <code>.cas</code> file. It does not record the phone microphone or create a RAM snapshot.</p>
   <ol>
     <li><strong>Boot BASIC:</strong> In the library, tap <strong>Clear selected media / Start in BASIC</strong>, then <strong>Start XRoar</strong>. This clears the media selection without deleting its file.</li>
-    <li><strong>Enter a program:</strong> For example, type <code>10 PRINT "HELLO"</code>, then Enter. Use <code>RUN</code> to check it if desired.</li>
+    <li><strong>Enter a program:</strong> For example, type <code>10 PRINT "HELLO"</code>, then Enter. Use the <strong>"</strong> button beside <strong>Space</strong> for each straight quote. Use <code>RUN</code> to check it if desired.</li>
     <li><strong>Prepare a cassette:</strong> Tap <strong>Files → Record new cassette</strong>. Enter a file label such as <code>My program</code>, then tap <strong>Start recording</strong>. Wait for “Recording ready”.</li>
     <li><strong>Save from BASIC:</strong> Type <code>CSAVE "MYPROG"</code>, then Enter. Use a short cassette name supported by your BASIC. This internal name is separate from the Android file label.</li>
     <li><strong>Wait for completion:</strong> Do not finish while the save is running. Wait for BASIC's prompt to return, then tap <strong>Files → Finish recording</strong> and confirm.</li>
@@ -225,7 +226,7 @@
     <li><strong>Interrupted recording:</strong> Files are retained rather than silently deleted. Forced app termination or stopping before BASIC completes can leave an incomplete cassette.</li>
     <li><strong>Storage:</strong> Uninstalling or clearing app data deletes local saved cassettes. Exported copies outside the app are separate backups.</li>
   </ul>
-  <div class="note"><strong>Current scope:</strong> Cassette saving and export are implemented. Save-state snapshots and disk-image export are not. Host tests cover storage safety, real CAS waveform round-trip and failed-write reporting; the Android recording/file-picker journey still needs a real-device check.</div>
+  <div class="note"><strong>Current scope:</strong> Cassette saving, export, and reloading are implemented and user-confirmed on Android after the quote-input fix. Host tests also cover storage safety, real CAS waveform round-trip and failed-write reporting. Save-state snapshots and disk-image export are not implemented.</div>
   <div class="footer">6 / 6 • Saving, exporting, and reloading cassettes</div>
 </section>
 </main>

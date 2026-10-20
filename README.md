@@ -37,7 +37,7 @@ Touch-joystick regression checks run with a JDK and C compiler: `bash android/te
 
 ## First run
 
-For step-by-step usage and the Direct/CoCo position-hold gamepad methods, see the printable [Android user guide](docs/android-user-guide.html).
+For step-by-step usage, the Direct/CoCo position-hold gamepad methods, the 1.0.9 quote button, and cassette saving/export/reloading, see the printable [Android 1.0.9 user guide](docs/android-user-guide.html).
 
 XRoar does not include copyrighted machine firmware. On the app's library screen, select the computer to emulate and import the ROM images you are entitled to use. The launcher reports missing firmware instead of allowing XRoar to fall back to a different machine. ROM files are copied into the app's private storage with their original filenames preserved.
 
