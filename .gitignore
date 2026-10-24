@@ -55,6 +55,9 @@ android/local.properties
 android/.idea/
 android/app/build/
 android/app/.cxx/
+android/app/keystore.properties
+*.jks
+*.keystore
 /generated-artifacts/
 
 # Generated Autotools files in the imported upstream tree

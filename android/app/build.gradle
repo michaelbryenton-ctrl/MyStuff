@@ -34,8 +34,31 @@ android {
         }
     }
 
+    signingConfigs {
+        release {
+            def propsFile = file("keystore.properties")
+            if (propsFile.exists()) {
+                def props = new Properties()
+                props.load(new FileInputStream(propsFile))
+                storeFile file(props['storeFile'] ?: "release.jks")
+                storePassword props['storePassword']
+                keyAlias props['keyAlias'] ?: "xroar-release"
+                keyPassword props['keyPassword']
+            } else {
+                def keystoreFile = file("release.jks")
+                if (keystoreFile.exists()) {
+                    storeFile keystoreFile
+                    storePassword System.getenv("KEYSTORE_PASSWORD")
+                    keyAlias System.getenv("KEY_ALIAS") ?: "xroar-release"
+                    keyPassword System.getenv("KEY_PASSWORD")
+                }
+            }
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -43,6 +66,15 @@ android {
 
     lint {
         abortOnError = false
+    }
+
+    applicationVariants.all { variant ->
+        if (variant.buildType.name == "release") {
+            variant.outputs.all { output ->
+                def version = variant.versionName
+                outputFileName = "xroar-v${version}.apk"
+            }
+        }
     }
 }
 
