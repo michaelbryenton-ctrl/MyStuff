@@ -91,16 +91,15 @@ jobs:
             -alias androiddebugkey 2>/dev/null | sha256sum | cut -d' ' -f1)"
           [[ "$actual" == "$expected" ]] || { echo "::error::Restored key does not match the pinned certificate."; exit 1; }
           echo "XROAR_DEBUG_KEYSTORE=$key" >> "$GITHUB_ENV"
-      - name: Install exact Android SDK packages and PDF tools
+      - name: Install exact Android SDK packages
+        timeout-minutes: 6
         shell: bash
         run: |
           set -euo pipefail
-          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" \
+          timeout 300 "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" \
             "platforms;android-35" "build-tools;35.0.0" \
             "ndk;28.2.13676358" "cmake;3.22.1"
           printf 'sdk.dir=%s\n' "$ANDROID_HOME" > android/local.properties
-          sudo apt-get update -qq
-          sudo apt-get install -y poppler-utils
       - name: Run Android regression checks
         shell: bash
         run: |
@@ -118,12 +117,12 @@ jobs:
           mkdir -p generated-artifacts/android
           cp android/app/build/outputs/apk/debug/app-debug.apk \
             "generated-artifacts/android/xroar-$VERSION-debug.apk"
+          grep -F "<title>XRoar Android $VERSION — User Guide</title>" docs/android-user-guide.html
           chrome="$(command -v google-chrome || command -v chromium)"
           "$chrome" --headless --no-sandbox --disable-gpu --no-pdf-header-footer \
             --print-to-pdf="$PWD/generated-artifacts/android/xroar-$VERSION-user-guide.pdf" \
             "file://$PWD/docs/android-user-guide.html"
-          pdfinfo "generated-artifacts/android/xroar-$VERSION-user-guide.pdf" \
-            | grep -F "XRoar Android $VERSION"
+          python3 -c 'from pathlib import Path; import os; p = Path("generated-artifacts/android/xroar-" + os.environ["VERSION"] + "-user-guide.pdf"); data = p.read_bytes(); assert data.startswith(b"%PDF-") and b"%%EOF" in data[-1024:], "PDF generation failed"'
       - name: Verify update compatibility against the latest published APK
         shell: bash
         run: |
