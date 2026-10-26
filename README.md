@@ -45,6 +45,17 @@ Tap **Full screen** in the emulator to enlarge the live picture while preserving
 
 Touch input still works on the live picture, including double-tap/hold to fire; gamepad mapping and selected mode are unchanged. Showing the phone keyboard reserves space above it. System bars are hidden in full screen and can be temporarily revealed with an edge swipe. Rotation fits the picture to the available space without restarting the game. This is a display option, not a save-state feature.
 
+### Uploading GitHub Releases
+
+Replit's authenticated GitHub CLI can publish releases without adding an API key to the app. After building and archiving the matching signed APK and PDF guide under `generated-artifacts/android/`, commit the source and write the release notes:
+
+```sh
+bash android/publish-release.sh --check docs/releases/1.0.10.md
+bash android/publish-release.sh --publish docs/releases/1.0.10.md
+```
+
+The command reads the version from Gradle, validates the APK's pinned signing identity, package, version, and emulator-process manifest, then pushes only a version tag to `origin`. It does not push or overwrite GitHub's `main` branch. It uploads both files to a draft, downloads and compares them against the originals, and publishes only after both match. Existing releases and conflicting tags are never overwritten. A failed upload/verification leaves a draft for inspection. This automates uploading prebuilt artifacts; it does not build the APK or generate the PDF.
+
 XRoar does not include copyrighted machine firmware. On the app's library screen, select the computer to emulate and import the ROM images you are entitled to use. The launcher reports missing firmware instead of allowing XRoar to fall back to a different machine. ROM files are copied into the app's private storage with their original filenames preserved.
 
 For **Tandy CoCo (NTSC)**, normally import both **Color BASIC** (`bas12.rom`, or another supported `bas10`–`bas13` image) and **Extended Color BASIC** (`extbas11.rom` or `extbas10.rom`). `extbas11.rom` alone is normally only the Extended BASIC half, not the complete firmware. A 16K combined firmware image named `coco.rom` is also supported. Firmware must retain a name recognised by the selected machine; the launcher shows a suggested filename when it is missing.

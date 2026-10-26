@@ -4,3 +4,4 @@
 - [Phone interaction requirements](phone-interaction.md) — keep controls off the picture; touch joystick should match the user's non-centering, single-button CoCo expectation.
 - [Android session safety](android-session-safety.md) — preserve native session isolation and signing identity; never solve an update failure by recommending a data-erasing uninstall.
 - [Video scaffold validation](video-scaffold-validation.md) — missing browser libraries can cause misleading animation type errors; check compiler libraries before rewriting scenes.
+- [GitHub release access](github-release-access.md) — an empty sandbox connection list need not mean broken OAuth; check the existing authenticated CLI before changing settings.
