@@ -37,7 +37,13 @@ Touch-joystick regression checks run with a JDK and C compiler: `bash android/te
 
 ## First run
 
-For step-by-step usage, the Direct/CoCo position-hold gamepad methods, the 1.0.9 quote button, and cassette saving/export/reloading, see the printable [Android 1.0.9 user guide](docs/android-user-guide.html).
+For step-by-step usage, full-screen display, the Direct/CoCo position-hold gamepad methods, the quote button, and cassette saving/export/reloading, see the printable [Android 1.0.10 user guide](docs/android-user-guide.html).
+
+### Full-screen display (1.0.10)
+
+Tap **Full screen** in the emulator to enlarge the live picture while preserving its 4:3 aspect ratio, with black borders as needed and no cropping. The CoCo bezel and normal control/pad rows are hidden. A separate 48dp strip below the picture keeps **Normal**, **Keyboard**, **Enter**, and **More** available. **More** provides Space, straight quote, the current joystick port/input/gamepad mode, Files, Library, and Exit app. Tap **Normal** or use Android Back (after dismissing the keyboard) to restore the usual layout.
+
+Touch input still works on the live picture, including double-tap/hold to fire; gamepad mapping and selected mode are unchanged. Showing the phone keyboard reserves space above it. System bars are hidden in full screen and can be temporarily revealed with an edge swipe. Rotation fits the picture to the available space without restarting the game. This is a display option, not a save-state feature.
 
 XRoar does not include copyrighted machine firmware. On the app's library screen, select the computer to emulate and import the ROM images you are entitled to use. The launcher reports missing firmware instead of allowing XRoar to fall back to a different machine. ROM files are copied into the app's private storage with their original filenames preserved.
 

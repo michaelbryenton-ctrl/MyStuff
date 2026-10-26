@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>XRoar Android 1.0.9 — User Guide</title>
+<title>XRoar Android 1.0.10 — User Guide</title>
 <style>
   :root { color-scheme: light; }
   * { box-sizing: border-box; }
@@ -46,11 +46,11 @@
 <body>
 <main>
 <section class="page">
-  <div class="eyebrow">Native Android • Version 1.0.9</div>
+  <div class="eyebrow">Native Android • Version 1.0.10</div>
   <h1>XRoar user guide</h1>
   <p class="lead">Setup, controls, CoCo position-hold input, and saving BASIC programs to cassette.</p>
   <p>XRoar emulates Dragon, Tandy Color Computer (CoCo), and Tandy MC-10 computers. This Android edition uses native emulation and does not include machine ROMs or game media.</p>
-  <div class="note warning"><strong>Updating an existing installation:</strong> Install <code>xroar-1.0.9-debug.apk</code> over the existing app. Do not uninstall first: uninstalling or clearing app storage deletes imported ROMs, media, and local saved cassettes. Keep exported backups outside the app.</div>
+  <div class="note warning"><strong>Updating an existing installation:</strong> Install <code>xroar-1.0.10-debug.apk</code> over the existing app. Do not uninstall first: uninstalling or clearing app storage deletes imported ROMs, media, and local saved cassettes. Keep exported backups outside the app.</div>
 
   <h3>1. Install and select a computer</h3>
   <ol>
@@ -66,7 +66,7 @@
 
   <h3>3. Choose software and start</h3>
   <p>Tap <strong>Choose cartridge, tape, disk, or program</strong>, select your software, and then tap <strong>Start XRoar</strong>. Imported files are copied to the app's private storage. A selected <code>.ccc</code> cartridge is launched with autorun enabled.</p>
-  <div class="footer">1 / 6 • Setup and installation</div>
+  <div class="footer">1 / 7 • Setup and installation</div>
 </section>
 
 <section class="page reference">
@@ -84,6 +84,7 @@
       <tr><td><strong>Exit app</strong></td><td>Asks for confirmation, then closes the app's task. Cancel leaves it open. Imported files and library preferences remain stored.</td></tr>
       <tr><td><strong>Port: Right / Left</strong></td><td>Selects the emulated joystick socket. The other socket stays neutral. Choose the socket expected by the game.</td></tr>
       <tr><td><strong>Files</strong></td><td>Starts or finishes a cassette recording and opens saved cassettes for export. See page 6.</td></tr>
+      <tr><td><strong>Full screen</strong></td><td>Enlarges the 4:3 picture with a small control strip. Tap Normal to restore this layout. See page 7.</td></tr>
     </tbody>
   </table>
   <p>Hide the phone keyboard with Android's keyboard-dismiss control or Back when you no longer need it. Phone-keyboard taps use a short emulated hold and gap so software can detect them. In 1.0.9, phone ASCII punctuation follows the emulated machine's character mapping; physical keyboard mapping and held-key behavior are unchanged.</p>
@@ -99,7 +100,7 @@
 
   <h3>Storage and session limits</h3>
   <p>Imports preserve the source files' names and leave the originals outside the app untouched. Returning to the library or exiting preserves imported files, but does not promise to save current emulated RAM, progress, or changes made by a running program. Keep separate backups of valuable files.</p>
-  <div class="footer">2 / 6 • General usage</div>
+  <div class="footer">2 / 7 • General usage</div>
 </section>
 
 <section class="page">
@@ -133,7 +134,7 @@
     <li><strong>B:</strong> has no recenter action in Direct mode.</li>
   </ul>
   <div class="note">Controller recognition and button layouts depend on Android and the controller. This version has no raw-USB driver or custom button-remapping screen.</div>
-  <div class="footer">3 / 6 • Existing input methods</div>
+  <div class="footer">3 / 7 • Existing input methods</div>
 </section>
 
 <section class="page">
@@ -164,7 +165,7 @@
   <h3>What “hold” means</h3>
   <p>This is cursor-like relative positioning, not an exact absolute replica of a physical CoCo stick. The game interprets the held analog value: it may continue moving an object, maintain an aiming position, or behave differently. Releasing the controller does not necessarily stop motion inside the game.</p>
   <div class="note warning"><strong>Safety resets override holding.</strong> Disconnection, app pause, focus loss, changing the input source or port, and changing gamepad mode centre the gamepad and release fire. The mode remains selected within the session, but stored position is not preserved through those resets. A new emulator session starts with Touch input and Direct gamepad mode.</div>
-  <div class="footer">4 / 6 • Position-hold operation</div>
+  <div class="footer">4 / 7 • Position-hold operation</div>
 </section>
 
 <section class="page reference">
@@ -195,9 +196,9 @@
   </table>
 
   <h3>Build and verification status</h3>
-  <p>Version 1.0.9 (version code 10) compiled for arm64-v8a, armeabi-v7a, x86, and x86_64. Signer and version checks passed against 1.0.8. Host checks covered quote mapping across six machine layouts, repeated quotes, Shift release, focus cancellation, physical-key isolation, and duplicate ASCII suppression. Cassette storage/export, real CAS encode/decode, and existing input/launch regression checks also passed.</p>
-  <p><strong>Device confirmation and limits:</strong> Saving, exporting, and reloading cassettes were confirmed on the user's Android device after the quote-input fix. Direct gamepad operation was also confirmed. Position-hold mode still needs physical-controller verification; these results do not establish universal device compatibility.</p>
-  <div class="footer">5 / 6 • XRoar Android 1.0.9 user guide • No ROMs or games are bundled</div>
+  <p>Version 1.0.10 (version code 11) adds full-screen display with a compact strip. Builds target arm64-v8a, armeabi-v7a, x86, and x86_64. Full-screen sizing checks cover aspect ratio, rotation-sized windows, and keyboard space. Earlier checks covered quote mapping across six machine layouts, physical-key isolation, cassette storage/export and real CAS encode/decode, plus input/launch regressions.</p>
+  <p><strong>Device confirmation and limits:</strong> Saving, exporting, and reloading cassettes were confirmed on the user's Android device after the quote-input fix. Direct gamepad operation was also confirmed. Full-screen interaction and position-hold mode still need device verification; these results do not establish universal device compatibility.</p>
+  <div class="footer">5 / 7 • XRoar Android 1.0.10 user guide • No ROMs or games are bundled</div>
 </section>
 
 <section class="page reference">
@@ -227,7 +228,38 @@
     <li><strong>Storage:</strong> Uninstalling or clearing app data deletes local saved cassettes. Exported copies outside the app are separate backups.</li>
   </ul>
   <div class="note"><strong>Current scope:</strong> Cassette saving, export, and reloading are implemented and user-confirmed on Android after the quote-input fix. Host tests also cover storage safety, real CAS waveform round-trip and failed-write reporting. Save-state snapshots and disk-image export are not implemented.</div>
-  <div class="footer">6 / 6 • Saving, exporting, and reloading cassettes</div>
+  <div class="footer">6 / 7 • Saving, exporting, and reloading cassettes</div>
+</section>
+
+<section class="page">
+  <div class="eyebrow">New in 1.0.10 • Display option</div>
+  <h2>Full screen with a small control strip</h2>
+  <p>Tap <strong>Full screen</strong> while playing. The picture expands into the available space while keeping its <strong>4:3 aspect ratio</strong>. Black borders fill any unused space; the picture is not stretched or cropped. The CoCo receiver bezel and normal control/pad rows are hidden.</p>
+
+  <h3>The compact strip</h3>
+  <p>A 48dp-high control strip stays below the picture, never over it.</p>
+  <table>
+    <thead><tr><th>Control</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Normal</strong></td><td>Restores the usual display, bezel, and controls without restarting the game.</td></tr>
+      <tr><td><strong>Keyboard</strong></td><td>Opens the phone keyboard. The picture shrinks to keep the strip above the keyboard.</td></tr>
+      <tr><td><strong>Enter</strong></td><td>Sends Enter directly to the emulated computer.</td></tr>
+      <tr><td><strong>More</strong></td><td>Offers Space, straight quote, the current joystick port and input source, gamepad mode when enabled, Files, Library, and Exit app.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Playing and changing orientation</h3>
+  <ul>
+    <li><strong>Touch:</strong> Touch or drag on the live picture to set the position. Release holds it. Double-tap to fire; hold the second tap for continuous fire.</li>
+    <li><strong>Gamepad:</strong> Your current input source, port, and Direct/CoCo position-hold selection remain in effect. Touch remains disabled when Gamepad input is selected.</li>
+    <li><strong>Rotate:</strong> Portrait and landscape fit the picture to the available space. Full screen changes the layout, not the running emulation session.</li>
+    <li><strong>System bars:</strong> Android's status/navigation bars are hidden. Swipe from an edge to reveal them temporarily.</li>
+  </ul>
+
+  <h3>Return to the normal layout</h3>
+  <p>Tap <strong>Normal</strong>, or use Android Back after dismissing the keyboard. Back exits full screen first rather than leaving the game. Files and navigation retain their recording/export safeguards.</p>
+  <div class="note warning"><strong>Not a save state:</strong> Switching display modes does not save the program or game. Save important BASIC programs to cassette before ending the emulation session.</div>
+  <div class="footer">7 / 7 • Full-screen display and compact controls</div>
 </section>
 </main>
 </body>

@@ -31,6 +31,12 @@ The user approved a selectable CoCo position-hold mode alongside the existing Di
 
 ## CoCo display and cassette expectations
 
+The user requested an optional full-screen game display that keeps the aspect ratio and a small control strip, rather than hiding every control.
+
+**Why:** They want a larger picture while retaining access to controls during play.
+
+**How to apply:** Keep controls outside the picture and preserve a clear return to normal layout. Full-screen display must not stretch/crop the game or change the selected input method.
+
 The user requested a CoCo bezel based on their picture of the TRS-80 13-inch Color Video Receiver, with live emulation inside the TV opening and the keyboard/joystick controls below.
 
 The user expects a selected machine-code cassette to initiate `CLOADM` automatically. Do not require manual console commands after choosing this kind of media. BASIC cassettes still need their own type-appropriate loading command.

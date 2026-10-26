@@ -190,3 +190,31 @@ mtime_ms = 1792526801765
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:561507c3-2e95-4312-aa5e-72f7a9582e6e/1cd71ede-2e06-4e95-a6fc-23f6235598c9/d8a4de24-e081-48ca-9644-09d266ffd1b3"
 storage_version_token = "1792768302858417"
 content_type = "application/pdf"
+
+[[outputs]]
+id = "Je327LFKGHd0WhFjR14xL"
+uri = "file://generated-artifacts/android/xroar-1.0.10-debug.apk"
+type = "unspecified"
+title = "XRoar Android 1.0.10 — Full-screen controls"
+description = "Update APK with aspect-preserving full-screen display and a compact control strip. Install over the existing app; do not uninstall."
+logical_id = "9258fb7b-fa33-4b15-a8d0-92dbe4ae6478"
+content_hash = "sha256:267537148d60dde963cbba8983118a8f9e7cba0669a92a34b89539f323162f30"
+size = 5861943
+mtime_ms = 1793044159506
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:561507c3-2e95-4312-aa5e-72f7a9582e6e/9258fb7b-fa33-4b15-a8d0-92dbe4ae6478/63da9f7b-5267-4bfe-8182-c484e9a17936"
+storage_version_token = "1793044173117347"
+content_type = "application/octet-stream"
+
+[[outputs]]
+id = "o-PgHjMsjKPZFekoftaYO"
+uri = "file://generated-artifacts/android/xroar-1.0.10-user-guide.pdf"
+type = "pdf"
+title = "XRoar Android 1.0.10 — User Guide"
+description = "Updated seven-page guide, including full-screen mode and compact-strip controls."
+logical_id = "802d59ce-5088-498b-8499-0c9c01f1e6e1"
+content_hash = "sha256:9099cc67425080b6a4766228b2e3bd70653ed0babda25a92bd7462ff72c013d5"
+size = 150473
+mtime_ms = 1793044079869
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:561507c3-2e95-4312-aa5e-72f7a9582e6e/802d59ce-5088-498b-8499-0c9c01f1e6e1/ab3fe69a-16df-4064-a0f8-5e558aa80444"
+storage_version_token = "1793044173569419"
+content_type = "application/pdf"

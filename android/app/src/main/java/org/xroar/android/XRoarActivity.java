@@ -10,11 +10,13 @@ import android.view.Gravity;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -31,6 +33,11 @@ public final class XRoarActivity extends SDLActivity {
     private GamepadInput gamepad;
     private boolean resumed;
     private CassetteFiles cassetteFiles;
+    private boolean expanded;
+    private EmulatorLayout emulatorLayout;
+    private FrameLayout displayFrame;
+    private LinearLayout keyControls, sessionControls, compactControls;
+    private Button modeControl;
 
     private void tapKey(int scancode) {
         if (!nativeTapKey(scancode)) {
@@ -85,10 +92,12 @@ public final class XRoarActivity extends SDLActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
 
         EmulatorLayout layout = new EmulatorLayout(this);
+        emulatorLayout = layout;
         layout.setBackgroundColor(Color.BLACK);
         String machine = getIntent().getStringExtra(LauncherActivity.EXTRA_MACHINE);
         FrameLayout display = machine != null && machine.startsWith("coco")
-                ? new CocoMonitorLayout(this) : new FrameLayout(this);
+                ? new CocoMonitorLayout(this) : new AspectDisplayLayout(this);
+        displayFrame = display;
         ((ViewGroup) mSurface.getParent()).removeView(mSurface);
         display.addView(mSurface, new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT,
@@ -96,6 +105,7 @@ public final class XRoarActivity extends SDLActivity {
         layout.addView(display, new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, 0));
         LinearLayout controls = new LinearLayout(this);
+        keyControls = controls;
         controls.setOrientation(LinearLayout.HORIZONTAL);
         controls.setGravity(Gravity.CENTER);
 
@@ -106,11 +116,12 @@ public final class XRoarActivity extends SDLActivity {
         keyboard.setBackgroundTintList(android.content.res.ColorStateList.valueOf(
                 Color.rgb(29, 55, 71)));
         keyboard.setOnClickListener(view -> {
+            View anchor = expanded ? compactControls.getChildAt(1) : keyboard;
             int[] position = new int[2];
-            keyboard.getLocationInWindow(position);
+            anchor.getLocationInWindow(position);
             SDLActivity.showTextInput(
                     InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS,
-                    position[0], position[1], keyboard.getWidth(), keyboard.getHeight());
+                    position[0], position[1], anchor.getWidth(), anchor.getHeight());
         });
         addControl(controls, keyboard);
         addKeyButton(controls, "Enter", 40);
@@ -150,12 +161,13 @@ public final class XRoarActivity extends SDLActivity {
         });
         port.setMinWidth(0);
         port.setMinimumWidth(0);
-        LinearLayout sessionControls = new LinearLayout(this);
+        sessionControls = new LinearLayout(this);
         sessionControls.setOrientation(LinearLayout.HORIZONTAL);
         sessionControls.addView(port, new LinearLayout.LayoutParams(
                 0, ViewGroup.LayoutParams.MATCH_PARENT, 1));
         Button source = new Button(this);
         Button mode = new Button(this);
+        modeControl = mode;
         mode.setText("Gamepad: Direct");
         mode.setAllCaps(false);
         mode.setTextSize(13);
@@ -179,7 +191,7 @@ public final class XRoarActivity extends SDLActivity {
             gamepad.setEnabled(!gamepad.isEnabled());
             joystick.setGamepadMode(gamepad.isEnabled());
             source.setText(gamepad.isEnabled() ? "Input: Gamepad" : "Input: Touch");
-            mode.setVisibility(gamepad.isEnabled() ? android.view.View.VISIBLE
+            mode.setVisibility(!expanded && gamepad.isEnabled() ? android.view.View.VISIBLE
                     : android.view.View.GONE);
         });
         addControl(sessionControls, source);
@@ -203,16 +215,44 @@ public final class XRoarActivity extends SDLActivity {
                     finishExit.run();
                 })));
         addControl(sessionControls, exit);
+        Button fullScreen = stripButton("Full screen", () -> setExpanded(true));
+        addControl(sessionControls, fullScreen);
         layout.addView(sessionControls, new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, dp(44)));
         layout.addView(mode, new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, dp(44)));
         layout.addView(joystick, new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, 0, 1));
+        compactControls = new LinearLayout(this);
+        compactControls.setOrientation(LinearLayout.HORIZONTAL);
+        addControl(compactControls, stripButton("Normal", () -> setExpanded(false)));
+        addControl(compactControls, stripButton("Keyboard", keyboard::performClick));
+        addControl(compactControls, stripButton("Enter", () -> tapKey(40)));
+        Button more = stripButton("More", () -> {});
+        more.setOnClickListener(view -> {
+            PopupMenu menu = new PopupMenu(this, more);
+            menu.getMenu().add("Space").setOnMenuItemClickListener(item -> {
+                tapKey(44); return true;
+            });
+            menu.getMenu().add("Straight quote (\")").setOnMenuItemClickListener(item -> {
+                tapKey(52); return true;
+            });
+            addMenuAction(menu, port.getText(), port);
+            addMenuAction(menu, source.getText(), source);
+            if (gamepad.isEnabled()) addMenuAction(menu, mode.getText(), mode);
+            addMenuAction(menu, "Files", files);
+            addMenuAction(menu, "Library", library);
+            addMenuAction(menu, "Exit app", exit);
+            menu.show();
+        });
+        addControl(compactControls, more);
+        compactControls.setVisibility(View.GONE);
+        layout.addView(compactControls, new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, dp(48)));
         mSurface.setOnTouchListener((view, event) -> joystick.handleTouch(view, event));
         mLayout.addView(layout, new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        SafeArea.apply(layout, true, true);
+        SafeArea.apply(layout, true, true, () -> expanded);
         if (Build.VERSION.SDK_INT < 30) {
             // Older Android does not expose IME insets separately. Keep the
             // unresized layout and reserve the obscured bottom using its
@@ -228,6 +268,8 @@ public final class XRoarActivity extends SDLActivity {
                             layout.getPaddingRight(), bottom);
             });
         }
+        setExpanded(savedInstanceState != null
+                && savedInstanceState.getBoolean("expandedDisplay", false));
     }
 
     @Override protected void onPause() {
@@ -249,6 +291,7 @@ public final class XRoarActivity extends SDLActivity {
     }
 
     @Override protected void onSaveInstanceState(Bundle state) {
+        state.putBoolean("expandedDisplay", expanded);
         if (cassetteFiles != null) cassetteFiles.saveState(state);
         super.onSaveInstanceState(state);
     }
@@ -259,6 +302,10 @@ public final class XRoarActivity extends SDLActivity {
     }
 
     @Override public void onBackPressed() {
+        if (expanded) {
+            setExpanded(false);
+            return;
+        }
         if (cassetteFiles != null) cassetteFiles.prepareToLeave(() -> super.onBackPressed());
         else super.onBackPressed();
     }
@@ -283,6 +330,54 @@ public final class XRoarActivity extends SDLActivity {
         if (!focused) releaseInput();
         else if (gamepad != null) gamepad.setActive(resumed);
         super.onWindowFocusChanged(focused);
+        if (focused && emulatorLayout != null) applyDisplayBars();
+    }
+
+    private Button stripButton(String label, Runnable action) {
+        Button button = new Button(this);
+        button.setText(label);
+        button.setAllCaps(false);
+        button.setFocusable(false);
+        button.setTextColor(Color.WHITE);
+        button.setBackgroundTintList(android.content.res.ColorStateList.valueOf(
+                Color.rgb(29, 55, 71)));
+        button.setOnClickListener(view -> action.run());
+        return button;
+    }
+
+    private void addMenuAction(PopupMenu menu, CharSequence label, Button action) {
+        menu.getMenu().add(label).setOnMenuItemClickListener(item -> {
+            action.performClick();
+            return true;
+        });
+    }
+
+    private void setExpanded(boolean enabled) {
+        // Cancel a held touch fire when its pad disappears; retain position and
+        // gamepad state. This is a layout change, not a new emulation session.
+        joystick.cancelFire();
+        expanded = enabled;
+        keyControls.setVisibility(enabled ? View.GONE : View.VISIBLE);
+        sessionControls.setVisibility(enabled ? View.GONE : View.VISIBLE);
+        modeControl.setVisibility(!enabled && gamepad.isEnabled() ? View.VISIBLE : View.GONE);
+        joystick.setVisibility(enabled ? View.GONE : View.VISIBLE);
+        compactControls.setVisibility(enabled ? View.VISIBLE : View.GONE);
+        if (displayFrame instanceof CocoMonitorLayout)
+            ((CocoMonitorLayout) displayFrame).setExpanded(enabled);
+        emulatorLayout.setExpanded(enabled);
+        applyDisplayBars();
+        emulatorLayout.requestApplyInsets();
+    }
+
+    @SuppressWarnings("deprecation")
+    private void applyDisplayBars() {
+        // SDL's delayed edge-swipe rehide must follow our display option too.
+        mFullscreenModeActive = expanded;
+        int flags = expanded ? View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION : View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+        getWindow().getDecorView().setSystemUiVisibility(flags);
     }
 
     private int dp(int value) {

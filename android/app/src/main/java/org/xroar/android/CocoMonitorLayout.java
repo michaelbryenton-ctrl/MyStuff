@@ -6,13 +6,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.view.View;
-import android.widget.FrameLayout;
 
 /** Decorative receiver cabinet with a real SDL surface in its CRT opening. */
-final class CocoMonitorLayout extends FrameLayout {
+final class CocoMonitorLayout extends AspectDisplayLayout {
     private final Drawable cabinet;
     private final Paint label = new Paint(Paint.ANTI_ALIAS_FLAG);
     private MonitorGeometry geometry;
+    private boolean expanded;
 
     CocoMonitorLayout(Context context) {
         super(context);
@@ -20,7 +20,17 @@ final class CocoMonitorLayout extends FrameLayout {
         setBackgroundColor(Color.BLACK);
     }
 
+    void setExpanded(boolean expanded) {
+        this.expanded = expanded;
+        requestLayout();
+        invalidate();
+    }
+
     @Override protected void onMeasure(int widthSpec, int heightSpec) {
+        if (expanded) {
+            super.onMeasure(widthSpec, heightSpec);
+            return;
+        }
         int width = MeasureSpec.getSize(widthSpec);
         int height = MeasureSpec.getSize(heightSpec);
         setMeasuredDimension(width, height);
@@ -32,6 +42,10 @@ final class CocoMonitorLayout extends FrameLayout {
     }
 
     @Override protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        if (expanded) {
+            super.onLayout(changed, left, top, right, bottom);
+            return;
+        }
         if (geometry == null) return;
         View screen = getChildAt(0);
         if (screen != null) screen.layout(geometry.screenLeft, geometry.screenTop,
@@ -41,7 +55,7 @@ final class CocoMonitorLayout extends FrameLayout {
 
     @Override protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
-        if (geometry == null) return;
+        if (expanded || geometry == null) return;
         // Draw above SurfaceView so the rounded mask covers only the CRT
         // corners, never the picture itself. No scanlines or tint are applied.
         cabinet.setBounds(geometry.left, geometry.top,

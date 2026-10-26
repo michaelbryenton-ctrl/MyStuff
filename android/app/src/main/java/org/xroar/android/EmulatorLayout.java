@@ -5,9 +5,16 @@ import android.widget.LinearLayout;
 
 /** Keep the display in the top half of the full window, even above the IME. */
 final class EmulatorLayout extends LinearLayout {
+    private boolean expanded;
+
     EmulatorLayout(Context context) {
         super(context);
         setOrientation(VERTICAL);
+    }
+
+    void setExpanded(boolean expanded) {
+        this.expanded = expanded;
+        requestLayout();
     }
 
     @Override protected void onMeasure(int widthSpec, int heightSpec) {
@@ -21,8 +28,8 @@ final class EmulatorLayout extends LinearLayout {
         }
         // On a short window/landscape keyboard, shrink only as much as needed
         // to keep the control rows above the keyboard rather than overlaying.
-        getChildAt(0).getLayoutParams().height = Math.max(1,
-                Math.min(fullHeight / 2, usableHeight - controls));
+        getChildAt(0).getLayoutParams().height = DisplaySizing.displayHeight(
+                expanded, fullHeight, usableHeight, controls);
         super.onMeasure(widthSpec, heightSpec);
     }
 }

@@ -10,7 +10,14 @@ import android.view.WindowInsets;
 final class SafeArea {
     private SafeArea() {}
 
+    interface ExpandedState { boolean isExpanded(); }
+
     static void apply(View view, boolean includeTop, boolean includeKeyboard) {
+        apply(view, includeTop, includeKeyboard, () -> false);
+    }
+
+    static void apply(View view, boolean includeTop, boolean includeKeyboard,
+            ExpandedState state) {
         final int leftPadding = view.getPaddingLeft();
         final int topPadding = view.getPaddingTop();
         final int rightPadding = view.getPaddingRight();
@@ -21,8 +28,9 @@ final class SafeArea {
             int right;
             int bottom;
             if (Build.VERSION.SDK_INT >= 30) {
-                Insets safe = windowInsets.getInsetsIgnoringVisibility(
-                        WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
+                int types = WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout();
+                Insets safe = state.isExpanded() ? windowInsets.getInsets(types)
+                        : windowInsets.getInsetsIgnoringVisibility(types);
                 left = safe.left;
                 top = safe.top;
                 right = safe.right;
