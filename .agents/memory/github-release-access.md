@@ -15,8 +15,14 @@ Working CLI authentication and release metadata access do not establish binary-u
 
 **How to apply:** Verify the complete asset-upload path before calling release automation working. Keep failed releases unpublished, distinguish upload failures from OAuth failures, and do not repeatedly ask the user to reconnect a functioning account.
 
-Use GitHub-hosted Actions for automated Android build/upload rather than sending binary assets through the failing Replit upload path.
+Use GitHub-hosted Actions for automated Android build/upload rather than sending binary assets through the failing Replit upload path. This route succeeded end to end, with published downloads and the original signing identity independently verified.
 
 **Why:** Source pushes and workflow dispatch work from Replit even when binary upload requests fail. Running the build/upload on GitHub avoids that transport dependency and does not require a personal access token.
 
 **How to apply:** Retain the original signing identity in encrypted Actions secrets, require new versions for app/guide changes under existing tags, and download-verify artifacts before publishing. A working source push alone is not proof of a successful release.
+
+Explicitly select the restored keystore in Gradle before Android signing configuration is finalized instead of assuming the runner's default keystore directory.
+
+**Why:** A restored key's public certificate matched the pinned identity, but the first runner build selected a different default keystore. Setting the signing path after project evaluation was too late because Android Gradle had finalized it.
+
+**How to apply:** Configure the key when the Android plugin is applied and keep the pinned-certificate check intact. Do not weaken that check or regenerate a key to make CI pass.
