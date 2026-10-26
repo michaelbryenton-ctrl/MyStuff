@@ -47,16 +47,25 @@ Touch input still works on the live picture, including double-tap/hold to fire; 
 
 ### Uploading GitHub Releases
 
-Replit's authenticated GitHub CLI can publish releases without adding an API key to the app. After building and archiving the matching signed APK and PDF guide under `generated-artifacts/android/`, commit the source and write the release notes:
+GitHub Actions builds and publishes Android releases automatically when versioned source changes are synced to `main`. No manual APK upload or personal API token is needed. The workflow uses GitHub's temporary token and the original signing key stored in an encrypted repository secret.
+
+For a new release:
+
+1. Increase `versionName` and `versionCode` in `android/app/build.gradle`.
+2. Update `docs/android-user-guide.html` for that version and add `docs/releases/<version>.md`.
+3. Sync/commit and push the source to GitHub's `main` branch.
+4. Open **Actions → Android release** to follow progress. The APK, PDF, and checksums appear under **Releases** after verification.
+
+The workflow runs the Android regression checks, builds all four ABIs, validates the pinned signing identity and update compatibility against the previous APK, generates the guide, uploads to a draft, and verifies downloaded APK/PDF bytes before publishing. An existing published version is never overwritten; changing app/guide files under an existing tag requires a new version. Failed unpublished drafts can be retried safely. Build artifacts are also retained in Actions for 30 days.
+
+To retry from Replit after syncing, use **Actions → Android release → Run workflow**, or:
 
 ```sh
 bash android/publish-release.sh --check docs/releases/1.0.10.md
 bash android/publish-release.sh --publish docs/releases/1.0.10.md
 ```
 
-The command reads the version from Gradle, validates the APK's pinned signing identity, package, version, and emulator-process manifest, then pushes only a version tag to `origin`. It does not push or overwrite GitHub's `main` branch. It uploads both files to a draft, downloads and compares them against the originals, and publishes only after both match. Existing releases and conflicting tags are never overwritten. A failed upload/verification leaves a draft for inspection. This automates uploading prebuilt artifacts; it does not build the APK or generate the PDF.
-
-**Current environment limitation:** GitHub CLI authentication, source pushes, tag creation, and draft-release creation work here, but binary uploads to `uploads.github.com` returned HTTP 400 during validation. End-to-end automated uploading is not yet working in this workspace. The 1.0.10 release remains an unpublished draft without assets; do not treat the upload command as fully verified.
+These commands validate the source sync and dispatch the GitHub workflow; they do not upload binaries from Replit. Direct binary uploads from this environment returned HTTP 400, so the actual build/upload runs on GitHub instead. Never delete or regenerate the signing key to fix an upload issue. If the encrypted signing secret is missing or the certificate differs, the build stops rather than creating an incompatible update.
 
 XRoar does not include copyrighted machine firmware. On the app's library screen, select the computer to emulate and import the ROM images you are entitled to use. The launcher reports missing firmware instead of allowing XRoar to fall back to a different machine. ROM files are copied into the app's private storage with their original filenames preserved.
 
