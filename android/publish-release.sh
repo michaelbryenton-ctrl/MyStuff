@@ -72,8 +72,12 @@ fi
 # Push only this release tag, not main or any other branch. Never force-update.
 git push origin "$commit:refs/tags/$tag"
 # Keep incomplete uploads private. A failure leaves a draft for inspection.
-gh release create "$tag" "$apk" "$guide" --repo "$repo" --verify-tag --draft \
-    --title "XRoar Android $version" --notes-file "$notes"
+if ! gh release create "$tag" "$apk" "$guide" --repo "$repo" --verify-tag --draft \
+        --title "XRoar Android $version" --notes-file "$notes"; then
+    echo "Release creation or asset upload failed. Nothing was published." >&2
+    echo "Inspect the $tag draft on GitHub before retrying; existing assets will not be overwritten." >&2
+    exit 1
+fi
 verify="$(mktemp -d)"
 trap 'rm -rf -- "$verify"' EXIT
 gh release download "$tag" --repo "$repo" --dir "$verify" \
