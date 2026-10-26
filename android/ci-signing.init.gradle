@@ -1,0 +1,16 @@
+// Select the securely restored key explicitly; runner defaults can point at a
+// different Android configuration directory. Never alter the pinned identity.
+gradle.beforeProject { project ->
+    if (project.path != ":app") return
+    def keyPath = System.getenv("XROAR_DEBUG_KEYSTORE")
+    if (!keyPath) {
+        throw new GradleException("CI requires the original signing-key path.")
+    }
+    def key = new File(keyPath)
+    if (!key.isFile()) {
+        throw new GradleException("The securely restored CI signing key is missing.")
+    }
+    project.plugins.withId("com.android.application") {
+        project.android.signingConfigs.getByName("debug").storeFile = key
+    }
+}

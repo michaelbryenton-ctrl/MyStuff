@@ -83,9 +83,14 @@ jobs:
           set -euo pipefail
           [[ -n "$KEYSTORE_BASE64" ]] || { echo "::error::Original signing-key secret is missing."; exit 1; }
           umask 077
-          mkdir -p "$HOME/.android"
-          printf '%s' "$KEYSTORE_BASE64" | base64 --decode > "$HOME/.android/debug.keystore"
-          test -s "$HOME/.android/debug.keystore"
+          key="$RUNNER_TEMP/xroar-debug.keystore"
+          printf '%s' "$KEYSTORE_BASE64" | base64 --decode > "$key"
+          test -s "$key"
+          expected="$(tr -d '\r\n ' < android/app/debug-signing-certificate.sha256)"
+          actual="$(keytool -exportcert -keystore "$key" -storepass android \
+            -alias androiddebugkey 2>/dev/null | sha256sum | cut -d' ' -f1)"
+          [[ "$actual" == "$expected" ]] || { echo "::error::Restored key does not match the pinned certificate."; exit 1; }
+          echo "XROAR_DEBUG_KEYSTORE=$key" >> "$GITHUB_ENV"
       - name: Install exact Android SDK packages and PDF tools
         shell: bash
         run: |
@@ -105,7 +110,7 @@ jobs:
           done
       - name: Build all four ABIs and validate pinned signer
         working-directory: android
-        run: bash gradlew --no-daemon --max-workers=2 assembleDebug
+        run: bash gradlew --no-daemon --max-workers=2 --init-script ci-signing.init.gradle assembleDebug
       - name: Package APK and render user guide
         shell: bash
         run: |
@@ -145,4 +150,4 @@ jobs:
       - name: Remove signing key from runner
         if: always()
         shell: bash
-        run: rm -f "$HOME/.android/debug.keystore"
+        run: rm -f "$RUNNER_TEMP/xroar-debug.keystore"
